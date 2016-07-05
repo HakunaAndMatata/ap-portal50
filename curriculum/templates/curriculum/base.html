@@ -23,7 +23,6 @@
             	{% if user.is_staff == false %}
             	<a href="{% url 'curriculum:index' %}">Home</a> /
             	{% endif %}
-            	<a href="{% url 'quizbank:index' %}">Quiz Bank</a> /
             	{% if user.is_staff %}
             	<a href="{% url 'admin:index' %}">Admin</a> /
             	{% endif %}
@@ -32,7 +31,6 @@
         {% else %}
         <div id="user-tools">
             Welcome, <strong>Guest</strong>.
-            	<a href="{% url 'quizbank:index' %}">Quiz Bank</a> /
             	<a href="{% url 'curriculum:login' %}">Log in</a> /
                 <a href="{% url 'curriculum:register' %}">Register</a>
         </div>

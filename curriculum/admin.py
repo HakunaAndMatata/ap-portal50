@@ -3,7 +3,6 @@ from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 from curriculum.models import UserProfile, Chapter, Module, Resource, ChapterVisibility, ModuleVisibility, ResourceVisibility, ResourceType
 from django.contrib.auth.models import User, Group
-from quizbank.models import Tag, Question, QuestionType
 # Register your models here.
 
 
@@ -78,29 +77,3 @@ admin_site.register(ResourceType, ResourceTypeAdmin)
 # admin_site.register(ChapterVisibility)
 # admin_site.register(ModuleVisibility)
 # admin_site.register(ResourceVisibility)
-
-
-# QuizBank Admin Registrations
-class TagAdmin(admin.ModelAdmin):
-	ordering=['name']
-
-class QuestionAdmin(admin.ModelAdmin):
-	fieldsets = [
-		('General', {'fields':['title', 'question', 'q_image', 'answer', 'a_image']}),
-		('Metadata', {'fields':['tags', 'qtype', 'released', 'points', 'difficulty', 'authorship_year']}),
-		('Source (optional)', {'fields':['original_exam', 'original_question']})
-	]
-	list_display = ('title', 'qtype', 'difficulty', 'original_exam', 'original_question')
-	ordering = ['-original_exam', 'original_question']
-	filter_horizontal = ('tags',) # this creates the search for tag, and allows moving left and right
-	# may need to change the ordering once non-exam questions start getting added, leaving this in comments in case
-	# list_display = ('title', 'qtype', 'difficulty', 'authorship_year', 'released')
-	# ordering = ['-authorship_year', 'title']
-
-class QuestionTypeAdmin(admin.ModelAdmin):
-	list_display = ('name', 'position')
-	ordering = ['position', 'name']
-
-admin_site.register(Tag, TagAdmin)
-admin_site.register(Question, QuestionAdmin)
-admin_site.register(QuestionType, QuestionTypeAdmin)
