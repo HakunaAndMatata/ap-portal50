@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
-from curriculum.models import UserProfile, Chapter, Module, Resource, ChapterVisibility, ModuleVisibility, ResourceVisibility, ResourceType
+from curriculum.models import *
 from django.contrib.auth.models import User, Group
 # Register your models here.
 
@@ -72,6 +72,7 @@ admin_site.register(Chapter, ChapterAdmin)
 admin_site.register(Module, ModuleAdmin)
 admin_site.register(Resource, ResourceAdmin)
 admin_site.register(ResourceType, ResourceTypeAdmin)
+admin_site.register(Supplement)
 
 # Getting rid of visibilities from admin site
 # admin_site.register(ChapterVisibility)

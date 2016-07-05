@@ -50,13 +50,23 @@ class ResourceType(models.Model):
 		return str(self.name)
 
 class Resource(models.Model):
-	rtype = models.ForeignKey(ResourceType, on_delete=models.PROTECT, verbose_name="resource type")
-	module = models.ForeignKey(Module, on_delete=models.CASCADE)
-	name = models.CharField(max_length=512,default="")
-	content = models.CharField(max_length=512,default="",blank=True, verbose_name="description")
-	link = models.CharField(max_length=512,default="",blank=True)
-	def __unicode__(self):
+    rtype = models.ForeignKey(ResourceType, on_delete=models.PROTECT, verbose_name="resource type")
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    name = models.CharField(max_length=512,default="")
+    content = models.CharField(max_length=512,default="",blank=True, verbose_name="description")
+    link = models.CharField(max_length=512,default="",blank=True)
+    private = models.BooleanField(default=False)
+    def __unicode__(self):
 		return self.name
+
+# Teacher-specific supplement
+class Supplement(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    identifier = models.IntegerField(blank=True,default=0) #this is in case we add more things teachers can add
+    contents = models.TextField(default="")
+    def __unicode__(self):
+        return self.user.username + " " + module
 
 # Visibility classes, to deal with the visibility on particular teacher pages
 
