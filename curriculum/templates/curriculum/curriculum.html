@@ -1,0 +1,90 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}
+This is CS50 AP
+{% endblock %}
+
+{% block body %}
+
+<p class="headline">CS50 AP Curriculum{% if username != None %}: {{ username }}{% endif %}
+	{% if username != None and username == user.username %}
+	<a href="{% url 'curriculum:customize' %}" class="btn btn-default float-right">Customize</a>
+	{% endif %}
+</p>
+
+<br />
+
+<div class="row">
+	<div class="col-md-6">
+		<h3>Chapter:</h3>
+		<select class="form-control" onchange="location = this.value;">
+			<option disabled selected value=-1>Choose a Chapter</option>
+			{% for c in chapters %}
+				{% if c.num == chapter.num %}
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.num %}{% endif %} selected>{{ c.num}} : {{ c.name }}</option>
+				{% else %}
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.num %}{% endif %}>{{ c.num}} : {{ c.name }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-md-6">
+		<h3>Module:</h3>
+		<select class="form-control" onchange="location = this.value;">
+			<option disabled selected value=-1>Choose a Module</option>
+			{% for m in modules %}
+				{% if m.id == mod.id %}
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.num m.slug %}{% endif %} selected>{{ m.num}} : {{ m.name }}</option>
+				{% else %}
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.num m.slug %}{% endif %}>{{ m.num}} : {{ m.name }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+</div>
+
+{% if m_selected %}
+	<br />
+
+<div class="row">
+
+<div class="col-sm-12">
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Overview</b>: {{ mod.name }}</div>
+  <div class="panel-body">{{ mod.description }}</div>
+  {% if username == None and mod.duration != "" %}
+  <div class="panel-footer footer-text">This module should take approximately {{ mod.duration }} to complete, of a chapter that lasts {{ chapter.duration }}</div>
+  {% endif %}
+</div>
+</div>
+</div>
+
+
+<div class="row">
+{% for column in collection %}
+	<div class="col-md-6">
+	{% for row in column %}
+	<div class="panel panel-default">
+	<div class="panel-heading"><b>{{ row.name }}</b></div>
+	<div class="panel-body">
+		{% for resource in row.resources %}
+			{% if resource.link != "" %}
+				<b><a href="{{ resource.link }}" target="_blank">{{ resource.name }}</a></b>
+			{% else %}
+				<b>{{ resource.name }}</b>
+			{% endif %}
+			{% if resource.content != "" %}
+				: {{ resource.content }}
+			{% endif %}
+			<br /><br />
+		{% endfor %}
+	</div>
+	</div>
+	{% endfor %}
+	</div>
+{% endfor %}
+</div>
+
+{% endif %}
+
+{% endblock %}

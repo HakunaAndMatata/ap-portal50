@@ -1,0 +1,115 @@
+{% extends 'curriculum/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+This is CS50 AP
+{% endblock %}
+
+{% block body %}
+
+<p class="headline">This is CS50 AP.</p>
+<div class="row">	
+	<div class="col-sm-6 col-md-3">
+	<div class="panel panel-default">
+	  <div style="background-color:#cceeff" class="panel-body top-panel">
+	  	Access the CS50 AP Quiz Bank to find sample questions on AP topics
+	  	<br /><br />
+	  	<a class="btn btn-default btn-lg" href="{% url 'quizbank:index' %}"">Access</a>
+	  </div>
+	</div>
+	</div>
+
+	<div class="col-sm-6 col-md-3">
+	<div class="panel panel-default">
+	  <div style="background-color:#ffd9b3" class="panel-body top-panel">
+	  	Teachers interested in CS50's AP curriculum and resources:
+	  	<br /><br />
+	  	<a class="btn btn-default btn-lg" href="{% url 'curriculum:register' %}">Register Now</a>
+	  </div>
+	</div>
+	</div>
+
+	<div class="col-sm-6 col-md-3">
+	<div class="panel panel-default">
+	  <div style="background-color:#b3ffcc" class="panel-body top-panel">
+	  	Sign in to CS50 AP's website to access your account:
+	  	<br /><br />
+	  	<a class="btn btn-default btn-lg" href="{% url 'curriculum:login' %}">Log In</a>
+	  </div>
+	</div>
+	</div>
+
+	<div class="col-sm-6 col-md-3">
+	<div class="panel panel-default">
+	  <div style="background-color:#ecc6c6" class="panel-body top-panel">
+	  	View the College Board-approved CS50 AP curriculum:
+	  	<br /><br />
+	  	<a class="btn btn-default btn-lg" href="{% url 'curriculum:curriculum_page' %}">View Here</a>
+	  </div>
+	</div>
+	</div>
+</div>
+
+<div class="row"><div class="col-sm-12">
+<div class="alert alert-warning">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Teachers:</strong> Interested in teaching CS50 AP at your school this coming year? <a href="https://cs50.harvard.edu/ap/apply" target="_blank">Apply here!</a>
+</div>
+</div></div>
+
+<div class="row"><div class="col-sm-12">
+<div class="alert alert-warning">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Interested in taking CS50 this coming year through Harvard Extension School?</strong> Microsoft has announced a generous scholarship program for 2016-17, for which you can <a href="https://cs50.wufoo.com/forms/cs50-educator-scholarship-application-201617/" target="_blank">apply here!</a>
+</div>
+</div></div>
+
+
+<div class="row">
+
+<div class="col-sm-6">
+<div class="panel panel-default">
+  <div class="panel-heading">What is CS50 AP?</div>
+  <div class="panel-body">
+  	<b>CS50</b> is <b>Harvard University</b>'s introduction to the intellectual enterprises of computer science and the art of programming for students less comfortable and more comfortable alike. 
+  	<br /><br />
+  	<b>CS50 AP</b> is a free adaptation for high schools that satisfies the new <b>AP CS Principles</b> <a href="https://advancesinap.collegeboard.org/stem/computer-science-principles" target="_blank">curriculum framework</a> (that officially debuts in Fall 2016). If you would like to bring CS50 AP to your own high school, see <a href="https://cs50.harvard.edu/ap/apply" target="_blank">this application for teachers</a> for more details!
+  	<br /><br />
+  	Videos and materials from our <a href="http://cs50.wiki/Cambridge+Workshop+%282016%29" target="_blank"><b>first CS50 AP Workshop</b></a> of 2016 are now available!
+  	<br /><br />
+	The slides from Doug Lloyd's presentation on <a href="https://www.dropbox.com/s/0uh5x5gnjizpxhw/iste.pdf?dl=0" target="_blank"><b>CS50 AP</b></a> at ISTE are also available.
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">CS50 in the News</div>
+  <div class="panel-body">
+  	February 9, 2016 -- featuring Marcus Twyford and Cincinnati Country Day School on cincinnati.com: <a href="http://www.cincinnati.com/story/news/local/indian-hill/2016/02/09/country-day-students-part-pilot-study/80061258/" target="_blank">http://www.cincinnati.com/story/news/local/indian-hill/2016/02/09/country-day-students-part-pilot-study/80061258/</a>
+  	<br /><br />
+  	February 8, 2016 -- featured in Katie O'Shaughnessey's blog: <a href="http://codingisexploding.com/2016/02/08/microsoft-cs50-hackathon-nyc/" target="_blank">http://codingisexploding.com/2016/02/08/microsoft-cs50-hackathon-nyc/</a>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">About this Site</div>
+  <div class="panel-body">
+  	This site will be the home of CS50 AP's teacher-facing materials. We will be posting all the curricular resources we can for you in advance of the first day of the school year. Please don't hesitate to email Doug (<a href="mailto:ap@cs50.harvard.edu">ap@cs50.harvard.edu</a>) for requests for new materials and/or feature requests, if you don't see what you're looking for, and we'll do our best to get things up as quickly as we can.
+  </div>
+</div>
+
+</div>
+
+<div class="col-sm-6">
+<div class="panel panel-default">
+  <div class="panel-heading">CS50 AP Videos</div>
+  <div class="panel-body centered-panel">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RVjHSAZdVJg" frameborder="0" allowfullscreen></iframe>
+<br /><br />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GAB6Gm7pTTA" frameborder="0" allowfullscreen></iframe>
+</div></div></div>
+</div>
+</div>
+
+<br /><br />
+
+{% endblock %}

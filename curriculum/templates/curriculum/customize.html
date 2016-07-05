@@ -1,0 +1,149 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}
+This is CS50 AP
+{% endblock %}
+
+{% block body %}
+
+<p class="headline">Customize Your CS50 AP Curriculum <a class="btn btn-default float-right" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a></p>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<select class="form-control" onchange="location = this.value;">
+			<option disabled selected value=-1>Choose a Chapter</option>
+			{% for c in chapters %}
+				{% if c.num == chapter.num %}
+				<option value={% url 'curriculum:chapter_customize' c.num %} selected>{{ c.num}} : {{ c.name }}</option>
+				{% else %}
+				<option value={% url 'curriculum:chapter_customize' c.num %}>{{ c.num}} : {{ c.name }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-md-6">
+		<select class="form-control" onchange="location = this.value;">
+			<option disabled selected value=-1>Choose a Module</option>
+			{% for m in modules %}
+				{% if m.id == mod.id %}
+				<option value={% url 'curriculum:module_customize' chapter.num m.slug %} selected>{{ m.num}} : {{ m.name }}</option>
+				{% else %}
+				<option value={% url 'curriculum:module_customize' chapter.num m.slug %}>{{ m.num}} : {{ m.name }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+</div>
+
+<br />
+
+{% if arg == "chapter" %}
+	<div class="dt_wrapper">
+		<table width="100%" class="table table-striped table-bordered table-hover" id="chapter-table">
+			<thead>
+				<tr>
+					<th>Toggle</th>
+					<th>Visible to Students</th>
+					<th>Curriculum</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form>
+					</td>
+					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
+				</tr>
+				{% for module in modules %}
+				<tr>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ module.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit">Toggle</button></form></td>
+					<td>{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
+					<td><a href="{% url 'curriculum:module_customize' chapter.num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+{% endif %}
+
+{% if arg == "module" %}
+	<div class="dt_wrapper">
+		<table width="100%" class="table table-striped table-bordered table-hover" id="module-table">
+			<thead>
+				<tr>
+					<th>Toggle</th>
+					<th>Visible to Students</th>
+					<th>Curriculum</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form>
+					</td>
+					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
+				</tr>
+				<tr>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ mod.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form></td>
+					<td><b>{% if mvis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<br /><br />
+	<div class="dt_wrapper">
+		<table width="100%" class="table table-striped table-bordered table-hover" id="resource-table">
+			<thead>
+				<tr>
+					<th>Toggle</th>
+					<th>Visible to Students</th>
+					<th>Resource</th>
+					<th>Resource Type</th>
+					<th>Resource Link</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for resource in resources %}
+					<tr>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="r_vis" value={{ resource.id }}><button class="btn btn-xs btn-default" type="submit">Toggle</button></form></td>
+					<td>{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
+					<td>{{ resource.rtype }}</td>
+					<td><a href="{{ resource.link }}">{{ resource.link }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+	$('#resource-table').DataTable({
+                responsive: true,
+                "iDisplayLength": 10,
+            	"language": {
+                "lengthMenu": 'Display <select class="form-control">'+
+                	'<option value="5">5</option>'+
+                    '<option value="10">10</option>'+
+                    '<option value="15">15</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select> resources',
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ resources",
+                "sEmptyTable": "There are no resources matching your query."
+            }
+        });
+});
+
+
+</script>
+{% endblock %}

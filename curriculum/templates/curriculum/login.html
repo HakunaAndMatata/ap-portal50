@@ -1,0 +1,49 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}
+This is CS50 AP
+{% endblock %}
+
+{% block body %}
+
+<p class="headline">Log In</p>
+
+{% if error %}
+<div class="row"><div class="col-sm-12">
+<div class="alert alert-danger">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Error: </strong>{{ error }}</a>
+</div>
+</div></div>
+<br /><br />
+{% endif %}
+
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
+</div>
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-10">
+<div class="panel panel-default">
+  <div class="panel-heading">Log In to CS50 AP</div>
+  <div class="panel-body centered-panel">
+  <form action="{% url 'curriculum:login' %}" method="post">
+  {% csrf_token %}
+  
+  Username:<br />
+  <input type="text" name="username" id="username" placeholder="Username" autofocus>
+  <br /><br />
+  
+  Password:<br />
+  <input type="password" name="password" placeholder="Password" id="password">
+  <br /><br />
+  
+  <button class="btn btn-default" type="submit">Log In</button>
+  </form>
+</div>
+<div class="panel-footer">Need an account? <a href="{% url 'curriculum:register' %}">Register here.</a></div>
+</div></div>
+
+<div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
+</div>
+</div>
+{% endblock %}

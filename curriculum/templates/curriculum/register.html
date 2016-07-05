@@ -1,0 +1,74 @@
+{% extends 'curriculum/base.html' %}
+
+{% block title %}
+This is CS50 AP
+{% endblock %}
+
+{% block body %}
+<p class="headline">Register</p>
+
+{% if error %}
+<div class="row"><div class="col-sm-12">
+<div class="alert alert-danger">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Error: </strong>{{ error }}</a>
+</div>
+</div></div>
+<br /><br />
+{% endif %}
+
+<div class="row">
+<div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
+</div>
+
+<div class="col-lg-4 col-md-4 col-sm-6 col-xs-10">
+<div class="panel panel-default">
+  <div class="panel-heading">Register for CS50 AP</div>
+  <div class="panel-body centered-panel">
+
+<form action="{% url 'curriculum:register' %}" method="post">
+{% csrf_token %}
+
+Username:<br />
+<input type="text" name="username" id="username" placeholder="Username" autofocus>
+<br /><br />
+
+Password:<br />
+<input type="password" name="password" id="password" placeholder="Password">
+<br /><br />
+
+Password (confirm):<br />
+<input type="password" name="password-confirm" id="password-confirm" placeholder="Confirm Password">
+<br /><br />
+
+First Name:<br />
+<input type="text" name="first" id="first" placeholder="First Name">
+<br /><br />
+
+Last Name:<br />
+<input type="text" name="last" id="last" placeholder="Last Name">
+<br /><br />
+
+Email Address:<br />
+<input type="email" name="email" id="email" placeholder="Email">
+<br /><br />
+
+School:<br />
+<input type="text" name="school" id="school" placeholder="School">
+<br /><br />
+
+Proof of Teacher Status:<br />
+<input type="text" name="school-proof" id="school-proof" placeholder="Proof of Teacher Status">
+<h6>Your account will not be approved until your status as a teacher has been verified by CS50's staff. Proof may be a link to a website which lists your name as a teacher.</h6>
+<br />
+
+<button class="btn btn-default" type="submit">Register</button>
+</form>
+</div>
+<div class="panel-footer">Already have an account? <a href="{% url 'curriculum:login' %}">Log in here.</a></div>
+</div></div>
+
+<div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
+</div>
+</div>
+{% endblock %}
