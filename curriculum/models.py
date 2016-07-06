@@ -66,7 +66,7 @@ class Supplement(models.Model):
     identifier = models.IntegerField(blank=True,default=0) #this is in case we add more things teachers can add
     contents = models.TextField(default="")
     def __unicode__(self):
-        return self.user.username + " " + module
+        return self.user.username + " " + self.module.slug
 
 # Visibility classes, to deal with the visibility on particular teacher pages
 

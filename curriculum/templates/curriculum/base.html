@@ -1,46 +1,134 @@
 {% load staticfiles %}
 
-<html>
+<html lang="en">
 	<head>
+	    <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
 		<title>{% block title %}{% endblock %}</title>
 		<script src="{% static 'curriculum/jquery-1.11.3.js' %}"></script>
 		<link rel="stylesheet" href="{% static 'curriculum/bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
-		<!-- DataTables Table Plug-In for jQuery -->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		{% block head %}{% endblock %}
+		<link rel="stylesheet" href="{% static 'curriculum/style2.css' %}">
+        
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="{% static 'curriculum/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script> 
+        
+        <!-- DataTables Table Plug-In for jQuery -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/>
 		<script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
-		{% block head %}{% endblock %}
-		<link rel="stylesheet" href="{% static 'curriculum/style.css' %}">
-		<!-- <script src="{% static 'curriculum/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script> -->
+		
+		<link rel="stylesheet" href="{% static 'curriculum/modular/css/vendor.css' %}">
+		<link rel="stylesheet" id="theme-style" href="{% static 'curriculum/modular/css/app.css' %}">
 	</head>
-	<body class=" dashboard"><div id="container">
-	<div class="wrapper">
-		<div id="header"><div id="branding">
-			<h1 id="site-name"><a href="{% url 'curriculum:index' %}">CS50 AP</a></h1>
-		</div>
-		{% if user != None and user.id != None %}
-		<div id="user-tools">
-            Welcome, <strong>{{ user.first_name }}</strong>.
-            	{% if user.is_staff == false %}
-            	<a href="{% url 'curriculum:index' %}">Home</a> /
-            	{% endif %}
-            	{% if user.is_staff %}
-            	<a href="{% url 'admin:index' %}">Admin</a> /
-            	{% endif %}
-                <a href="{% url 'curriculum:logout' %}">Log out</a>
-        </div>
-        {% else %}
-        <div id="user-tools">
-            Welcome, <strong>Guest</strong>.
-            	<a href="{% url 'curriculum:login' %}">Log in</a> /
-                <a href="{% url 'curriculum:register' %}">Register</a>
-        </div>
-        {% endif %}
-       </div>
-       <br />
-       <div class="page-content">
-		{% autoescape on %}{% block body %}{% endblock %}{% endautoescape %}
-		</div>
-	</div>
-	</div></body>
-	{% block script %}{% endblock %}
+<body>
+<div class="main-wrapper">
+   <div class="app" id="app">
+      {% block header %}
+       <header class="header">
+           <div class="header-block header-block-collapse hidden-lg-up"> <button class="collapse-btn" id="sidebar-collapse-btn">
+    <i class="fa fa-bars"></i>
+</button> </div>
+           <div class="header-block header-block-nav">
+               <ul class="nav-profile">
+                   <li class="profile dropdown">
+                       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="name">
+                          Welcome, {% if user != None and user.id != None %}{{ user.first_name }}{% else %}Guest{% endif %}
+                        </span></a>
+                       <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
+                          {% if user == None or user.id == None %}
+                           <a class="dropdown-item" href="{% url 'curriculum:login' %}"> <i class="fa fa-sign-in icon"></i> Log In </a>
+                           <a class="dropdown-item" href="{% url 'curriculum:register' %}"> <i class="fa fa-user icon"></i> Register </a>
+                          {% else %}
+                               <a class="dropdown-item" href="{% url 'curriculum:index' %}"> <i class="fa fa-home icon"></i> Home </a>
+                               {% if user.is_staff %}
+                               <a class="dropdown-item" href="{% url 'admin:index' %}"> <i class="fa fa-bar-chart-o icon"></i> Admin </a>
+                               {% endif %}
+                               <a class="dropdown-item" href="#"> <i class="fa fa-gear icon"></i> Settings </a>
+                               <div class="dropdown-divider"></div>
+                               <a class="dropdown-item" href="{% url 'curriculum:logout' %}"> <i class="fa fa-power-off icon"></i> Logout </a>
+                          {% endif %}
+                       </div>
+                   </li>
+               </ul>
+           </div>
+       </header>
+       {% endblock %}
+       {% block sidebar %}
+       <aside class="sidebar">
+           <div class="sidebar-container">
+               <div class="sidebar-header">
+                   <div class="brand"><a class="brand-link" href="{% url 'curriculum:index' %}"><i class="fa fa-code icon"></i>&nbsp;&nbsp;<strong>CS50 AP</strong></a></div>
+               </div>
+               <nav class="menu">
+                   <ul class="nav metismenu" id="sidebar-menu">
+                       <li id="navbar-home">
+                           <a href="{% url 'curriculum:index' %}"><i class="fa fa-home"></i> Home</a>
+                       </li>
+                       <li id="navbar-home">
+                           <a href="{% url 'curriculum:curriculum_page' %}"><i class="fa fa-sitemap"></i> Curriculum</a>
+                       </li>
+                       {% if user == None or user.id == None %}
+                       <li id="navbar-login">
+                           <a href="{% url 'curriculum:login' %}"><i class="fa fa-sign-in"></i> Log In</a>
+                       </li>
+                       <li id="navbar-register">
+                           <a href="{% url 'curriculum:register' %}"><i class="fa fa-user"></i> Register</a>
+                       </li>
+                       {% else %}
+                           {% if user.is_staff %}
+                           <li id="navbar-admin">
+                               <a href="{% url 'admin:index' %}"><i class="fa fa-bar-chart-o"></i> Admin</a>
+                           </li>
+                           {% endif %}
+                       <li id="navbar-customize">
+                           <a href="{% url 'curriculum:customize' %}"><i class="fa fa-puzzle-piece"></i> Customize</a>
+                       </li>
+                       <li id="navbar-settings">
+                           <a href="#"><i class="fa fa-gear"></i> Settings</a>
+                       </li>
+                       <li id="navbar-logout">
+                           <a href="{% url 'curriculum:logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+                       </li>
+                       {% endif %}
+                       <li>
+                           <a href=""> <i class="fa fa-link"></i> External Links <i class="fa arrow"></i> </a>
+                           <ul>
+                               <li><a href="http://cs50.net/" target="_blank"> CS50 Home</a></li>
+                               <li><a href="http://cs50.wiki/" target="_blank"> CS50 AP Wiki</a></li>
+                               {% if user != None and user.id != None %}
+                               <li><a href="https://cs50.harvard.edu/ap/discuss/" target="blank">CS50 Discuss</a></li>
+                               {% endif %}
+                               <li><a href="https://secure-media.collegeboard.org/digitalServices/pdf/ap/ap-computer-science-principles-course-and-exam-description.pdf" target="_blank">College Board Course Description PDF</a></li>
+                           </ul>
+                       </li>
+                   </ul>
+               </nav>
+           </div>
+       </aside>
+       {% endblock %}
+{% autoescape on %}
+{% block fullbody %}
+<article class="content">
+{% block body %}{% endblock %}
+</article>
+{% endblock %}
+{% endautoescape %}
+
+</div>
+</div>
+<!-- Reference block for JS -->
+<div class="ref" id="ref">
+<div class="color-primary"></div>
+<div class="chart">
+    <div class="color-primary"></div>
+    <div class="color-secondary"></div>
+</div>
+</div>
+<script src={% static 'curriculum/modular/js/vendor.js' %}></script>
+<script src={% static 'curriculum/modular/js/app.js' %}></script>
+
+</body>
+{% block script %}{% endblock %}
 </html>

@@ -10,7 +10,7 @@ def index(request):
 	# if user is logged in
 	if request.user.is_authenticated():
 		if request.user.userprofile.approved:
-			return render(request, 'curriculum/portal.html', {'user':request.user})
+			return render(request, 'curriculum/index.html', {'user':request.user})
 		else:
 			return render(request, 'curriculum/inactive.html', {'user':request.user})
 	# if user is not logged in

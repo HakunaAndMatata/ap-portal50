@@ -1,0 +1,11 @@
+.brand-link, .brand-link:hover, .brand-link:visited, .brand-link:active {
+    color:white;
+}
+
+.headline {
+    font-size:36px;
+}
+
+.center-card {
+    text-align:center;
+}

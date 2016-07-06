@@ -1,14 +1,16 @@
-from curriculum.models import Chapter, Module, Resource, ChapterVisibility, ModuleVisibility, ResourceVisibility, ResourceType
+from curriculum.models import *
 from django.contrib.auth.models import User
 
 # takes care of any preparation needed before logging a user in each time
 def login_prep(user):
-	generate_visibilities(user)
+    generate_visibilities(user)
+    generate_moduleinfos(user)
 
 # takes care of setup necessary for registration
 def reg_setup(user):
-	generate_visibilities(user)
-	show_all_resources(user)
+    generate_visibilities(user)
+    generate_moduleinfos(user)
+    show_all_resources(user)
 
 # generates visibility statuses for those that do not exist
 def generate_visibilities(user):
@@ -37,6 +39,16 @@ def generate_visibilities(user):
 			vis = ResourceVisibility.objects.create(user=user,resource=resource)
 			vis.visible = True
 			vis.save()
+            
+def generate_moduleinfos(user):
+    if (user == None):
+        return
+    modules = Module.objects.all()
+    for module in modules:
+        info_exists = len(Supplement.objects.filter(user=user,module=module)) == 1
+        if not info_exists:
+            info = Supplement.objects.create(user=user, module=module)
+            info.save()
 
 # sets all resource visibilities to true
 def show_all_resources(user):
