@@ -8,7 +8,13 @@ This is CS50 AP
 
 <p class="headline">CS50 AP Curriculum{% if username != None %}: {{ username }}{% endif %}
 	{% if username != None and username == user.username %}
-	<a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
+        {% if not c_selected %}
+	    <a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
+	    {% elif not m_selected %}
+	    <a href="{% url 'curriculum:chapter_customize' chapter.num %}" class="btn btn-default" style="float:right;">Customize</a>
+	    {% else %}
+	    <a href="{% url 'curriculum:module_customize' chapter.num mod.slug %}" class="btn btn-default" style="float:right;">Customize</a>
+	    {% endif %}
 	{% endif %}
 </p>
 
@@ -45,9 +51,19 @@ This is CS50 AP
 
 {% if m_selected %}
 	<br />
+	
+{% if username != None and modinfo != None and modinfo.contents != "" %}
+<div class="row">
+<div class="col-sm-12">
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Teacher's Note</b></div>
+  <div class="panel-body" style="white-space:pre-wrap;margin-top:-1.2em;margin-bottom:-1.2em;">{{ modinfo.contents }}</div>
+</div>
+</div>
+</div>
+{% endif %}
 
 <div class="row">
-
 <div class="col-sm-12">
 <div class="panel panel-default">
   <div class="panel-heading"><b>Overview</b>: {{ mod.name }}</div>

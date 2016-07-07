@@ -162,6 +162,7 @@ def curriculum(request, username, chapter, module_slug):
     modules = []
     resources = []
     mod = None
+    mi = None
     # determines whether a chapter is selected; if it is, need to get modules
     c_selected = (chapter != None)
     if (c_selected):
@@ -179,8 +180,11 @@ def curriculum(request, username, chapter, module_slug):
         if (username != None) and (not module_visibility(user_by_username(username), mod.num, chapter.num).visible):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'Your requested module is set to be not visible.'})
         resources = resource_collection(user_by_username(username), mod)
+        # get module info if it's for a teacher
+        if (username != None):
+            mi = get_moduleinfo(User.objects.get(username=username), mod)
     return render(request, 'curriculum/curriculum.html', {'user':request.user, 'username':username, 'chapters':chapters, 'c_selected':c_selected, 'chapter':chapter,
-        'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources})
+        'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources, 'modinfo':mi})
 
 # teacher-specific curriculum page, start landing page
 def teacher_page(request, username):

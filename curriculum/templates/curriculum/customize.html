@@ -6,7 +6,15 @@ This is CS50 AP
 
 {% block body %}
 
-<p class="headline">Customize Your CS50 AP Curriculum <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a></p>
+<p class="headline">Customize Your CS50 AP Curriculum
+    {% if arg == None %}
+    <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a>
+    {% elif arg == "Chapter" %}
+     <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page_chapter' user.username chapter.num %}">View Your Curriculum</a>
+    {% else %}
+    <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page_module' user.username chapter.num mod.slug %}">View Your Curriculum</a>
+    {% endif %}
+</p>
 
 
 <div class="row">
