@@ -66,8 +66,8 @@ This is CS50 AP
 				</tr>
 				{% for module in modules %}
 				<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ module.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit">Toggle</button></form></td>
-					<td>{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
+					<td><button onclick="toggleModule({{ module.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+					<td id="m-vis-cell-{{ module.num }}-{{ chapter.num }}">{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
 					<td><a href="{% url 'curriculum:module_customize' chapter.num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
 				</tr>
 				{% endfor %}
@@ -96,8 +96,8 @@ This is CS50 AP
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ mod.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form></td>
-					<td><b>{% if mvis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td><button onclick="toggleModule({{ mod.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+					<td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}"><b>{% if mvis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
 				</tr>
 			</tbody>
@@ -128,8 +128,8 @@ This is CS50 AP
 			<tbody>
 				{% for resource in resources %}
 					<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="r_vis" value={{ resource.id }}><button class="btn btn-xs btn-primary" type="submit">Toggle</button></form></td>
-					<td>{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+					<td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
 					<td><a href="{{ resource.link }}">{{ resource.link }}</a></td>
@@ -168,8 +168,55 @@ $(document).ready(function() {
             }
         });
 });
+    
+function toggleModule(module_num, chapter_num) {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        user: {{ user.id }},
+        module_num: module_num,
+        chapter_num: chapter_num
+    };
+ 
+ var request = $.ajax({
+    url: "{% url 'curriculum:module_toggle' %}",
+    type: 'POST',
+    data: parameters
+ });
+ 
+ request.done(function(response, textStatus, jqXHR) {
+    data = jQuery.parseJSON(response);
+    now_visible = data["new_val"];
+     $('#m-vis-cell-' + module_num + '-' + chapter_num).html(now_visible ? "Yes" : "No");
+ });
+ request.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+ });
+}
 
 {% if arg == "module" %}
+function toggleResource(resource_id) {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        user: {{ user.id }},
+        resource_id: resource_id
+    };
+ 
+ var request = $.ajax({
+    url: "{% url 'curriculum:resource_toggle' %}",
+    type: 'POST',
+    data: parameters
+ });
+ 
+ request.done(function(response, textStatus, jqXHR) {
+    data = jQuery.parseJSON(response);
+    now_visible = data["new_val"];
+     $('#r-vis-cell-' + resource_id).html(now_visible ? "Yes" : "No");
+ });
+ request.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+ });
+}
+
 function save() {
     var parameters = {
         csrfmiddlewaretoken: '{{ csrf_token }}',
