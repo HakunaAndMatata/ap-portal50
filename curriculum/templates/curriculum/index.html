@@ -7,8 +7,9 @@ This is CS50 AP
 
 {% block body %}
 <p class="headline">This is CS50 AP.</p>
-
-<div class="row sameheight-container">
+    
+    {% if user == None or user.id == None %}
+    <div class="row sameheight-container">
     <div class="col-sm-6 col-md-3">
         <div class="card card-default center-card">
             <div class="card-header">
@@ -47,6 +48,47 @@ This is CS50 AP
             <div class="card-footer"> <a class="btn btn-primary" href="{% url 'curriculum:login' %}">Log In</a> </div>
         </div>
     </div>
+    {% else %}
+    <div class="row sameheight-container">
+    <div class="col-sm-6 col-md-3">
+        <div class="card card-default center-card">
+            <div class="card-header">
+                <div class="header-block sameheight-item">
+                    <p class="title"> View Your Site </p>
+                    <br />
+                    on CS50 AP to share the link with your students
+                </div>
+            </div>
+            <div class="card-footer"> <a class="btn btn-primary" href="{% url 'curriculum:teacher_page' user.username %}">View</a> </div>
+        </div>
+    </div>
+    
+    <div class="col-sm-6 col-md-3">
+        <div class="card card-default center-card">
+            <div class="card-header">
+                <div class="header-block sameheight-item">
+                    <p class="title"> Customize Your Site </p>
+                    <br />
+                    on CS50 AP to fit what you want your students to see
+                </div>
+            </div>
+            <div class="card-footer"> <a class="btn btn-primary" href="{% url 'curriculum:customize' %}">Customize</a> </div>
+        </div>
+    </div>
+    
+    <div class="col-sm-6 col-md-3">
+        <div class="card card-default center-card">
+            <div class="card-header">
+                <div class="header-block sameheight-item">
+                    <p class="title"> Discuss CS50 </p>
+                    <br />
+                    with other teachers who are using the CS50 AP curriculum
+                </div>
+            </div>
+            <div class="card-footer"> <a class="btn btn-primary" href="https://cs50.harvard.edu/ap/discuss/" target="_blank">Discuss</a> </div>
+        </div>
+    </div>
+    {% endif %}
     
     <div class="col-sm-6 col-md-3">
         <div class="card card-default center-card">

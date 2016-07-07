@@ -20,6 +20,10 @@
 		
 		<link rel="stylesheet" href="{% static 'curriculum/modular/css/vendor.css' %}">
 		<link rel="stylesheet" id="theme-style" href="{% static 'curriculum/modular/css/app.css' %}">
+		
+
+		
+		
 	</head>
 <body>
 <div class="main-wrapper">
@@ -66,7 +70,7 @@
                        <li id="navbar-home">
                            <a href="{% url 'curriculum:index' %}"><i class="fa fa-home"></i> Home</a>
                        </li>
-                       <li id="navbar-home">
+                       <li id="navbar-curriculum">
                            <a href="{% url 'curriculum:curriculum_page' %}"><i class="fa fa-sitemap"></i> Curriculum</a>
                        </li>
                        {% if user == None or user.id == None %}
