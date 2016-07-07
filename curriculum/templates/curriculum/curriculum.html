@@ -49,6 +49,21 @@ This is CS50 AP
 	</div>
 </div>
 
+{% if c_selected and not m_selected and username = None and chapter.description != "" %}
+<br />
+ <div class="card card-default">
+    <div class="card-header">
+        <div class="header-block">
+            <p class="title"> Chapter Overview </p>
+        </div>
+    </div>
+    <div class="card-block">
+        {% autoescape off %}{{ chapter.description }}{% endautoescape %}
+    </div>
+</div>
+{% endif %}
+
+
 {% if m_selected %}
 	<br />
 	
