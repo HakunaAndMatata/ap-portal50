@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views
+from . import views, ajax
 
 app_name = 'curriculum'
 urlpatterns = [
@@ -15,6 +15,8 @@ urlpatterns = [
 	url(r'^curriculum/$', views.curriculum_page, name='curriculum_page'),
 	url(r'^curriculum/(?P<chapter>[0-9]+)/$', views.curriculum_page_chapter, name='curriculum_page_chapter'),
 	url(r'^curriculum/(?P<chapter>[0-9]+)/(?P<slug>[\w.@+-]+)/$', views.curriculum_page_module, name='curriculum_page_module'),
+    
+    url(r'^ajax/modinfochange/$', ajax.update_modinfo, name='update_modinfo'),
 
 	# both /brian and /u/brian will go to the user's curriculum page
 	url(r'^(?P<username>[\w.@+-]+)/$', views.teacher_page, name='teacher_page'),

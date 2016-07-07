@@ -8,7 +8,7 @@ This is CS50 AP
 
 <p class="headline">CS50 AP Curriculum{% if username != None %}: {{ username }}{% endif %}
 	{% if username != None and username == user.username %}
-	<a href="{% url 'curriculum:customize' %}" class="btn btn-default float-right">Customize</a>
+	<a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
 	{% endif %}
 </p>
 

@@ -6,7 +6,7 @@ This is CS50 AP
 
 {% block body %}
 
-<p class="headline">Customize Your CS50 AP Curriculum <a class="btn btn-default float-right" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a></p>
+<p class="headline">Customize Your CS50 AP Curriculum <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a></p>
 
 
 <div class="row">
@@ -51,14 +51,14 @@ This is CS50 AP
 			<tbody>
 				<tr>
 					<td>
-						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form>
+						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form>
 					</td>
 					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				{% for module in modules %}
 				<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ module.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit">Toggle</button></form></td>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ module.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit">Toggle</button></form></td>
 					<td>{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
 					<td><a href="{% url 'curriculum:module_customize' chapter.num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
 				</tr>
@@ -82,13 +82,13 @@ This is CS50 AP
 			<tbody>
 				<tr>
 					<td>
-						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form>
+						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form>
 					</td>
 					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ mod.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-default" type="submit"><b>Toggle</b></button></form></td>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="m_vis" value={{ mod.num }}><input type="hidden" name="c_select" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form></td>
 					<td><b>{% if mvis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
 				</tr>
@@ -96,8 +96,14 @@ This is CS50 AP
 		</table>
 	</div>
 	<br /><br />
-	<h3>Custom Module Information Panel:</h3>
+	<h4>Custom Module Information Panel:</h4>
 	<h6>This information will be displayed to your students on your personal module page.</h6>
+	<div class="card card-default">
+        <div class="card-block">
+            <textarea rows="5" style="width:100%" autofocus id="custom-area">{{ modinfo.contents }}</textarea>
+        </div>
+        <div class="card-footer"> <button onclick="save()" class="btn btn-primary">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;<span id="save-response"></span> </div>
+    </div>
 
 	<br /><br />
 	<div class="dt_wrapper">
@@ -114,7 +120,7 @@ This is CS50 AP
 			<tbody>
 				{% for resource in resources %}
 					<tr>
-					<td><form method="post">{% csrf_token %}<input type="hidden" name="r_vis" value={{ resource.id }}><button class="btn btn-xs btn-default" type="submit">Toggle</button></form></td>
+					<td><form method="post">{% csrf_token %}<input type="hidden" name="r_vis" value={{ resource.id }}><button class="btn btn-xs btn-primary" type="submit">Toggle</button></form></td>
 					<td>{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
@@ -154,6 +160,31 @@ $(document).ready(function() {
             }
         });
 });
+
+{% if arg == "module" %}
+function save() {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        user: {{ user.id }},
+        module: {{ mod.id }},
+        contents: $('#custom-area').val()
+    };
+    
+    var request = $.ajax({
+        url: "{% url 'curriculum:update_modinfo' %}",
+        type: 'POST',
+        data: parameters
+    });
+    
+    request.done(function(response, textStatus, jqXHR) {
+        $('#save-response').html('Saved successfully.')
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+	});
+}
+{% endif %}
+    
 </script>
 
 {% endblock %}
