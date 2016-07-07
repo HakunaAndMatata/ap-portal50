@@ -6,17 +6,21 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}{% endblock %}</title>
-		<script src="{% static 'curriculum/jquery-1.11.3.js' %}"></script>
+<!--		<script src="{% static 'curriculum/jquery-1.11.3.js' %}"></script>-->
+    
 		<link rel="stylesheet" href="{% static 'curriculum/bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		{% block head %}{% endblock %}
 		<link rel="stylesheet" href="{% static 'curriculum/style2.css' %}">
         
-        <script src="{% static 'curriculum/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script> 
-        
         <!-- DataTables Table Plug-In for jQuery -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/>
-		<script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css"/>
+         
+    
+<!--		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>-->
+<!--		<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>-->
+		
+		
 		
 		<link rel="stylesheet" href="{% static 'curriculum/modular/css/vendor.css' %}">
 		<link rel="stylesheet" id="theme-style" href="{% static 'curriculum/modular/css/app.css' %}">
@@ -130,8 +134,12 @@
     <div class="color-secondary"></div>
 </div>
 </div>
+
 <script src={% static 'curriculum/modular/js/vendor.js' %}></script>
 <script src={% static 'curriculum/modular/js/app.js' %}></script>
+<!--<script src="{% static 'curriculum/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script> -->
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
+
 
 </body>
 {% block script %}{% endblock %}
