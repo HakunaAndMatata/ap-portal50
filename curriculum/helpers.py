@@ -203,3 +203,14 @@ def generate_resources(rtype, user, module):
 	resources = Resource.objects.filter(rtype=rtype,module=module)
 	return vis_resources_in(resources,user)
 
+# helper function for module info supplements
+# gets the modul info if it exists; if it doesn't exist, creates it and gets it
+def get_moduleinfo(user, module):
+    lst = Supplement.objects.filter(user=user, module=module)
+    if (len(lst) == 0):
+        info = Supplement.objects.create(user=user, module=module)
+        info.save()
+        return info
+    else:
+        return lst[0]
+        

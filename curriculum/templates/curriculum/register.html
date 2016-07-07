@@ -30,7 +30,7 @@ This is CS50 AP
           Register for CS50 AP
             </h1> </header>
             <div class="auth-content">
-                <form action="{% url 'curriculum:login' %}" method="post">
+                <form action="{% url 'curriculum:register' %}" method="post">
                    {% csrf_token %}
                     <div class="form-group"> <label for="username">Username</label> <input type="text" class="form-control underlined" name="username" id="username" placeholder="Username" required autofocus> </div>
                     <div class="form-group"> <label for="password">Password</label> <input type="password" class="form-control underlined" name="password" id="password" placeholder="Password" required></div>
@@ -40,8 +40,9 @@ This is CS50 AP
                     <div class="form-group"> <label for="email">Email Address</label> <input type="email" class="form-control underlined" name="email" id="email" placeholder="Email Address" required> </div>
                     <div class="form-group"> <label for="school">School</label> <input type="text" class="form-control underlined" name="school" id="school" placeholder="School Name" required> </div>
                     <div class="form-group"> <label for="school-proof">Proof of Teacher Status</label> <input type="text" class="form-control underlined" name="school-proof" id="school-proof" placeholder="Proof of Teacher Status" required> </div>
+                    <h6>Your account will not be approved until your status as a teacher has been verified by CS50's staff. Proof may be a link to an official school website which lists your name as a teacher.<br /><br />If you would like to submit proof of status by alternate means (such as by including a file or image or other documentation), write "via email" in the "Proof of Teacher Status" field and email your proof of status to <a href="mailto:ap@cs50.harvard.edu">ap@cs50.harvard.edu</a>.</h6><br />
 
-                    <div class="form-group"> <button type="submit" class="btn btn-block btn-primary">Login</button> </div>
+                    <div class="form-group"> <button type="submit" class="btn btn-block btn-primary">Register</button> </div>
                     <div class="form-group">
                         <p class="text-muted text-xs-center">Already have an account? <a href="{% url 'curriculum:login' %}">Log In Here!</a></p>
                     </div>

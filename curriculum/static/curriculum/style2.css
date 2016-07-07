@@ -1,5 +1,6 @@
 .brand-link, .brand-link:hover, .brand-link:visited, .brand-link:active {
     color:white;
+    font-size:28px;
 }
 
 .headline {
@@ -13,7 +14,8 @@
 
 @media only screen and (min-width:768px) {
     .auth-container-register {
-        top: 75% !important;
+/*        top: 90% !important;*/
+          top: 640px !important;
     }
 }
 
