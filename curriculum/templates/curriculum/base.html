@@ -85,6 +85,9 @@
                            <a href="{% url 'curriculum:register' %}"><i class="fa fa-user"></i> Register</a>
                        </li>
                        {% else %}
+                       <li id="navbar-personal">
+                           <a href="{% url 'curriculum:teacher_page' user.username %}"><i class="fa fa-desktop"></i> Your Site</a>
+                       </li>
                            {% if user.is_staff %}
                            <li id="navbar-admin">
                                <a href="{% url 'admin:index' %}"><i class="fa fa-bar-chart-o"></i> Admin</a>

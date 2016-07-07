@@ -109,7 +109,11 @@ This is CS50 AP
 {% block script %}
 <script>
 $(document).ready(function() {
+    {% if username == None %}
     $('#navbar-curriculum').addClass("active");
+    {% else %}
+    $('#navbar-personal').addClass("active");
+    {% endif %}
 });
 </script>
 {% endblock %}
