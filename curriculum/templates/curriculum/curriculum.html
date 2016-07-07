@@ -1,4 +1,5 @@
 {% extends 'curriculum/base.html' %}
+{% load staticfiles %}
 
 {% block title %}
 This is CS50 AP
@@ -55,6 +56,7 @@ This is CS50 AP
     <div class="card-header">
         <div class="header-block">
             <p class="title"> Chapter Overview </p>
+            <a href="{{ overview_url }}" target="_blank">(Download as PDF)</a>
         </div>
     </div>
     <div class="card-block">

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
+from django.contrib.staticfiles.templatetags.staticfiles import static #needed to generate static urls
 from curriculum.models import UserProfile, Chapter, Module, Resource, ChapterVisibility, ModuleVisibility, ResourceVisibility
 from curriculum.helpers import *
 
@@ -163,6 +164,7 @@ def curriculum(request, username, chapter, module_slug):
     resources = []
     mod = None
     mi = None
+    overview_url = "#"
     # determines whether a chapter is selected; if it is, need to get modules
     c_selected = (chapter != None)
     if (c_selected):
@@ -172,6 +174,7 @@ def curriculum(request, username, chapter, module_slug):
         if (username != None) and (not chapter_visibility(user_by_username(username),chapter.num).visible):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'Your requested chapter is set to be not visible.'})
         modules = Module.objects.filter(chapter=chapter) if username == None else visible_modules(user_by_username(username),chapter)
+        overview_url = static("curriculum/chapter-overviews/" + str(chapter.num) + ".pdf")
     m_selected = (module_slug != None)
     if (m_selected):
         mod = module_by_slug(module_slug,chapter.num)
@@ -183,7 +186,7 @@ def curriculum(request, username, chapter, module_slug):
         # get module info if it's for a teacher
         if (username != None):
             mi = get_moduleinfo(User.objects.get(username=username), mod)
-    return render(request, 'curriculum/curriculum.html', {'user':request.user, 'username':username, 'chapters':chapters, 'c_selected':c_selected, 'chapter':chapter,
+    return render(request, 'curriculum/curriculum.html', {'user':request.user, 'username':username, 'chapters':chapters, 'c_selected':c_selected, 'chapter':chapter, 'overview_url':overview_url,
         'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources, 'modinfo':mi})
 
 # teacher-specific curriculum page, start landing page
