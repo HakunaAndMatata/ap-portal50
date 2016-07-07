@@ -9,3 +9,18 @@
 .center-card {
     text-align:center;
 }
+
+
+@media only screen and (min-width:768px) {
+    .auth-container-register {
+        top: 75% !important;
+    }
+}
+
+@media only screen and (max-width:767px) {
+    .auth-container-register {
+        top: 0% !important;
+    }
+}
+    
+

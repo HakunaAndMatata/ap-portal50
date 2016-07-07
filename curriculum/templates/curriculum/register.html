@@ -4,8 +4,13 @@
 This is CS50 AP
 {% endblock %}
 
-{% block body %}
-<p class="headline">Register</p>
+{% block header %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block fullbody %}
 
 {% if error %}
 <div class="row"><div class="col-sm-12">
@@ -16,6 +21,43 @@ This is CS50 AP
 </div></div>
 <br /><br />
 {% endif %}
+
+<div class="auth" style="padding:0px;">
+    <div class="auth-container-register auth-container">
+        <div class="card" style>
+            <header class="auth-header">
+                <h1 class="auth-title">
+          Register for CS50 AP
+            </h1> </header>
+            <div class="auth-content">
+                <form action="{% url 'curriculum:login' %}" method="post">
+                   {% csrf_token %}
+                    <div class="form-group"> <label for="username">Username</label> <input type="text" class="form-control underlined" name="username" id="username" placeholder="Username" required autofocus> </div>
+                    <div class="form-group"> <label for="password">Password</label> <input type="password" class="form-control underlined" name="password" id="password" placeholder="Password" required></div>
+                    <div class="form-group"> <label for="password-confirm">Password</label> <input type="password" class="form-control underlined" name="password-confirm" id="password-confirm" placeholder="Confirm Password" required></div>
+                    <div class="form-group"> <label for="first">First Name</label> <input type="text" class="form-control underlined" name="first" id="first" placeholder="First Name" required> </div>
+                    <div class="form-group"> <label for="last">Last Name</label> <input type="text" class="form-control underlined" name="last" id="last" placeholder="Last Name" required> </div>
+                    <div class="form-group"> <label for="email">Email Address</label> <input type="email" class="form-control underlined" name="email" id="email" placeholder="Email Address" required> </div>
+                    <div class="form-group"> <label for="school">School</label> <input type="text" class="form-control underlined" name="school" id="school" placeholder="School Name" required> </div>
+                    <div class="form-group"> <label for="school-proof">Proof of Teacher Status</label> <input type="text" class="form-control underlined" name="school-proof" id="school-proof" placeholder="Proof of Teacher Status" required> </div>
+
+                    <div class="form-group"> <button type="submit" class="btn btn-block btn-primary">Login</button> </div>
+                    <div class="form-group">
+                        <p class="text-muted text-xs-center">Already have an account? <a href="{% url 'curriculum:login' %}">Log In Here!</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-xs-center" style="padding-bottom:50px;">
+            <a href="{% url 'curriculum:index' %}" class="btn btn-secondary rounded btn-sm"> <i class="fa fa-arrow-left"></i> Back to homepage </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+<!--
+
+<p class="headline">Register</p>
 
 <div class="row">
 <div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
@@ -71,4 +113,4 @@ Proof of Teacher Status:<br />
 <div class="col-lg-4 col-md-4 col-sm-3 col-xs-1">
 </div>
 </div>
-{% endblock %}
+-->
