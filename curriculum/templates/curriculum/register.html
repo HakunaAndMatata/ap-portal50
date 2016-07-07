@@ -12,18 +12,18 @@ This is CS50 AP
 
 {% block fullbody %}
 
-{% if error %}
-<div class="row"><div class="col-sm-12">
-<div class="alert alert-danger">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error: </strong>{{ error }}</a>
-</div>
-</div></div>
-<br /><br />
-{% endif %}
-
 <div class="auth" style="padding:0px;">
     <div class="auth-container-register auth-container">
+           {% if error %}
+                <div class="row" style="padding-top:50px;"><div class="col-sm-12">
+                <div class="alert alert-danger" style="background-color:#ff6666 !important;border-width:0px;">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Error: </strong>{{ error }}</a>
+            </div>
+            </div></div>
+            <br />
+            {% endif %}
+            
         <div class="card" style>
             <header class="auth-header">
                 <h1 class="auth-title">
