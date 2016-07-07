@@ -33,3 +33,11 @@ def module_toggle(request):
         toggle_module_visibility(user, module_num, chapter_num)
         response = {"new_val" : module_visibility(user, module_num, chapter_num).visible}
         return HttpResponse(json.dumps(response))
+    
+def chapter_toggle(request):
+    if request.method == 'POST':
+        user = User.objects.get(id=request.POST.get('user'))
+        chapter_num = request.POST.get('chapter_num')
+        toggle_chapter_visibility(user, chapter_num)
+        response = {"new_val" : chapter_visibility(user, chapter_num).visible}
+        return HttpResponse(json.dumps(response))

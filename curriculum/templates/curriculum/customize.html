@@ -59,9 +59,9 @@ This is CS50 AP
 			<tbody>
 				<tr>
 					<td>
-						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form>
+						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
 					</td>
-					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td id="c-vis-cell-{{ chapter.num }}"><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				{% for module in modules %}
@@ -90,9 +90,9 @@ This is CS50 AP
 			<tbody>
 				<tr>
 					<td>
-						<form method="post">{% csrf_token %}<input type="hidden" name="c_vis" value={{ chapter.num }}><button class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></form>
+						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
 					</td>
-					<td><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td id="c-vis-cell-{{ chapter.num }}"><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				<tr>
@@ -168,6 +168,30 @@ $(document).ready(function() {
             }
         });
 });
+    
+function toggleChapter(chapter_num) {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        user: {{ user.id }},
+        chapter_num: chapter_num
+    };
+ 
+ var request = $.ajax({
+    url: "{% url 'curriculum:chapter_toggle' %}",
+    type: 'POST',
+    data: parameters
+ });
+ 
+ request.done(function(response, textStatus, jqXHR) {
+    data = jQuery.parseJSON(response);
+    now_visible = data["new_val"];
+     $('#c-vis-cell-' + chapter_num).html(now_visible ? "Yes" : "No");
+ });
+ request.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+ });
+}
+
     
 function toggleModule(module_num, chapter_num) {
     var parameters = {
