@@ -78,6 +78,9 @@
                            <a href="{% url 'curriculum:curriculum_page' %}"><i class="fa fa-sitemap"></i> Curriculum</a>
                        </li>
                        {% if user == None or user.id == None %}
+                       <li id="navbar-resources">
+                           <a href="{% url 'curriculum:resources' %}"><i class="fa fa-files-o"></i> Resources</a>
+                       </li>
                        <li id="navbar-login">
                            <a href="{% url 'curriculum:login' %}"><i class="fa fa-sign-in"></i> Log In</a>
                        </li>
