@@ -208,3 +208,7 @@ def curriculum_page_chapter(request,chapter):
 
 def curriculum_page_module(request,chapter,slug):
     return curriculum(request,None,chapter,slug)
+
+def resources(request):
+    resources = Resource.objects.all()
+    return render(request, 'curriculum/resources.html', {'user':request.user, 'resources': resources})

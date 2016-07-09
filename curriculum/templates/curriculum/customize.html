@@ -132,7 +132,7 @@ This is CS50 AP
 					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
-					<td><a href="{{ resource.link }}">{{ resource.link }}</a></td>
+					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

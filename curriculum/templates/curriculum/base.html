@@ -5,7 +5,7 @@
 	    <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}{% endblock %}</title>
+		<title>{% block title %}This is CS50 AP{% endblock %}</title>
 <!--		<script src="{% static 'curriculum/jquery-1.11.3.js' %}"></script>-->
     
 		<link rel="stylesheet" href="{% static 'curriculum/bootstrap-3.3.6-dist/css/bootstrap.min.css' %}">
@@ -88,14 +88,18 @@
                        <li id="navbar-personal">
                            <a href="{% url 'curriculum:teacher_page' user.username %}"><i class="fa fa-desktop"></i> Your Site</a>
                        </li>
+                       <li id="navbar-customize">
+                           <a href="{% url 'curriculum:customize' %}"><i class="fa fa-puzzle-piece"></i> Customize</a>
+                       </li>
+                       <li id="navbar-resources">
+                           <a href="{% url 'curriculum:resources' %}"><i class="fa fa-files-o"></i> Resources</a>
+                       </li>
+                          
                            {% if user.is_staff %}
                            <li id="navbar-admin">
                                <a href="{% url 'admin:index' %}"><i class="fa fa-bar-chart-o"></i> Admin</a>
                            </li>
                            {% endif %}
-                       <li id="navbar-customize">
-                           <a href="{% url 'curriculum:customize' %}"><i class="fa fa-puzzle-piece"></i> Customize</a>
-                       </li>
                        <li id="navbar-settings">
                            <a href="#"><i class="fa fa-gear"></i> Settings</a>
                        </li>

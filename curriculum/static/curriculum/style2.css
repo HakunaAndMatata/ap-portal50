@@ -32,6 +32,11 @@
     word-break: break-all;
 }
 
+.nowrapTable tbody tr td {
+    word-wrap: normal !important;
+    word-break: normal !important;
+}
+
 .dataTable {
 /*    table-layout: fixed;*/
 }
