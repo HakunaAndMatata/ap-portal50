@@ -211,4 +211,5 @@ def curriculum_page_module(request,chapter,slug):
 
 def resources(request):
     resources = Resource.objects.all()
-    return render(request, 'curriculum/resources.html', {'user':request.user, 'resources': resources})
+    rtypes = ResourceType.objects.all()
+    return render(request, 'curriculum/resources.html', {'user':request.user, 'resources': resources, 'rtypes':rtypes})

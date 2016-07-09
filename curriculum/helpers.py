@@ -213,4 +213,3 @@ def get_moduleinfo(user, module):
         return info
     else:
         return lst[0]
-    
