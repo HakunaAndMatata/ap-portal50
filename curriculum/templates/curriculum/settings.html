@@ -11,7 +11,14 @@
 <br />
 
 <h4>Site Settings</h4>
-Background Color:  <input class="jscolor" value="ab2567">
+<small>Note: These settings will only take effect on your personal CS50 AP site.</small><br />
+Header Color:  <input id="headercolor-picker" class="jscolor" value="{{ headercolor }}"> <button onclick="defaultHeaderColor()" class="btn btn-default btn-sm">Set Default</button>
+<br />
+Background Color:  <input id="bgcolor-picker" class="jscolor" value="{{ bgcolor }}"> <button onclick="defaultBGColor()" class="btn btn-default btn-sm">Set Default</button>
+<br />
+Sidebar Color:  <input id="sidecolor-picker" class="jscolor" value="{{ sidecolor }}"> <button onclick="defaultSideColor()" class="btn btn-default btn-sm">Set Default</button>
+<br />
+Text Color:  <input id="textcolor-picker" class="jscolor" value="{{ textcolor }}"> <button onclick="defaultTextColor()" class="btn btn-default btn-sm">Set Default</button>
 
 <br /><br /><br />
 <button onclick="save()" class="btn btn-primary">Save</button>
@@ -24,9 +31,47 @@ $(document).ready(function() {
     $('#navbar-settings').addClass('active');
 });
     
-function save() {
-    
+function defaultBGColor() {
+    $('#bgcolor-picker').get(0).jscolor.fromString('F0F3F6');
 }
+
+function defaultHeaderColor() {
+    $('#headercolor-picker').get(0).jscolor.fromString('D7DDE4');
+}
+    
+    
+function defaultSideColor() {
+    $('#sidecolor-picker').get(0).jscolor.fromString('3A4651');
+}
+    
+function defaultTextColor() {
+    $('#textcolor-picker').get(0).jscolor.fromString('4F5F6F');
+}
+    
+function save() {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        user: {{ user.id }},
+        bgcolor: $('#bgcolor-picker').val(),
+        headercolor: $('#headercolor-picker').val(),
+        sidecolor: $("#sidecolor-picker").val(),
+        textcolor: $('#textcolor-picker').val()
+    };
+ 
+     var request = $.ajax({
+        url: "{% url 'curriculum:update_colors' %}",
+        type: 'POST',
+        data: parameters
+     });
+
+     request.done(function(response, textStatus, jqXHR) {
+        location.reload(true);
+     });
+     request.fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+     });
+}
+
     
 </script>
 {% endblock %}

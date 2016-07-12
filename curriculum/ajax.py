@@ -41,3 +41,13 @@ def chapter_toggle(request):
         toggle_chapter_visibility(user, chapter_num)
         response = {"new_val" : chapter_visibility(user, chapter_num).visible}
         return HttpResponse(json.dumps(response))
+    
+def update_colors(request):
+    if request.method == 'POST':
+        user = request.user
+        user.userprofile.bgcolor = request.POST.get('bgcolor')
+        user.userprofile.headercolor = request.POST.get('headercolor')
+        user.userprofile.sidecolor = request.POST.get('sidecolor')
+        user.userprofile.textcolor = request.POST.get('textcolor')
+        user.userprofile.save()
+        return HttpResponse(json.dumps({"result" : "Success"}))

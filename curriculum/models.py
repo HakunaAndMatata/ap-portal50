@@ -23,6 +23,9 @@ class UserProfile(models.Model):
 	approved = models.BooleanField(default=False)
 	location = models.CharField(max_length=300, default="")
 	bgcolor = models.CharField(max_length=7, default="F0F3F6")
+	headercolor = models.CharField(max_length=7, default="D7DDE4")
+	sidecolor = models.CharField(max_length=7, default="3A4651")
+	textcolor = models.CharField(max_length=7, default="4F5F6F")
 	def __unicode__(self):
 		return self.user.username
 

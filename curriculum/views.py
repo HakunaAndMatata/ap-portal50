@@ -153,7 +153,9 @@ def module_customize(request, chapter, slug):
     return custom(request,"module",chapter,slug)
 
 def curriculum(request, username, chapter, module_slug):
+    # variables that are specific to user
     # check to make sure user actually exists
+    # 'username' refers to the username of the curriculum, not the user that is currently logged in
     if (username != None):
         user = User.objects.filter(username=username)
         if (len(user) != 1):
@@ -165,6 +167,11 @@ def curriculum(request, username, chapter, module_slug):
     mod = None
     mi = None
     overview_url = "#"
+    # get color settings if there's a particular user selected
+    bgcolor = None if username == None else user_by_username(username).userprofile.bgcolor
+    headercolor = None if username == None else user_by_username(username).userprofile.headercolor
+    sidecolor = None if username == None else user_by_username(username).userprofile.sidecolor
+    textcolor = None if username == None else user_by_username(username).userprofile.textcolor
     # determines whether a chapter is selected; if it is, need to get modules
     c_selected = (chapter != None)
     if (c_selected):
@@ -187,7 +194,8 @@ def curriculum(request, username, chapter, module_slug):
         if (username != None):
             mi = get_moduleinfo(User.objects.get(username=username), mod)
     return render(request, 'curriculum/curriculum.html', {'user':request.user, 'username':username, 'chapters':chapters, 'c_selected':c_selected, 'chapter':chapter, 'overview_url':overview_url,
-        'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources, 'modinfo':mi})
+        'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources, 'modinfo':mi,
+        'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor})
 
 # teacher-specific curriculum page, start landing page
 def teacher_page(request, username):
@@ -217,4 +225,8 @@ def resources(request):
 
 # handles settings
 def settings(request):
-    return render(request, 'curriculum/settings.html', {'users':request.user})
+    bgcolor = request.user.userprofile.bgcolor
+    headercolor = request.user.userprofile.headercolor
+    sidecolor = request.user.userprofile.sidecolor
+    textcolor = request.user.userprofile.textcolor
+    return render(request, 'curriculum/settings.html', {'user':request.user, 'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor})
