@@ -209,7 +209,12 @@ def curriculum_page_chapter(request,chapter):
 def curriculum_page_module(request,chapter,slug):
     return curriculum(request,None,chapter,slug)
 
+# view to display all resources in searchable format by type
 def resources(request):
     resources = Resource.objects.all()
     rtypes = ResourceType.objects.all()
     return render(request, 'curriculum/resources.html', {'user':request.user, 'resources': resources, 'rtypes':rtypes})
+
+# handles settings
+def settings(request):
+    return render(request, 'curriculum/settings.html', {'users':request.user})

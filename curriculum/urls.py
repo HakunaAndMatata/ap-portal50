@@ -13,6 +13,7 @@ urlpatterns = [
 	url(r'^customize/(?P<chapter>[0-9]+)/(?P<slug>[\w.@+-]+)/$', views.module_customize, name='module_customize'),
     
     url(r'^resources/$', views.resources, name='resources'),
+    url(r'^settings/$', views.settings, name='settings'),
 
 	url(r'^curriculum/$', views.curriculum_page, name='curriculum_page'),
 	url(r'^curriculum/(?P<chapter>[0-9]+)/$', views.curriculum_page_chapter, name='curriculum_page_chapter'),
