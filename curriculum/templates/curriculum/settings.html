@@ -1,13 +1,18 @@
 {% extends 'curriculum/base.html' %}
+{% load staticfiles %}
+
+{% block header %}
+{{ block.super }}
+<script src="{% static 'curriculum/jscolor-2.0.4/jscolor.min.js' %}"></script>
+{% endblock %}
 
 {% block body %}
 <p class="headline">Settings</p>
+<br />
 
-<div class="row">
-   <div class="col">
-       This is the settings page.
-   </div>
-</div>
+<h4>Site Settings</h4>
+Background Color:  <input class="jscolor" value="ab2567">
+
 {% endblock %}
 
 
