@@ -2357,7 +2357,7 @@ pre {
 .sidebar {
   background-color: #3a4651;
   width: 230px;
-  padding-bottom: 60px;
+  padding-bottom: 60px; 
   position: absolute;
   top: 0;
   left: 0;

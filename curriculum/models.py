@@ -22,6 +22,7 @@ class UserProfile(models.Model):
 	acct_type = models.CharField(max_length=3, choices=ACCT_TYPE_CHOICES, default=TEACHER)
 	approved = models.BooleanField(default=False)
 	location = models.CharField(max_length=300, default="")
+	bgcolor = models.CharField(max_length=7, default="F0F3F6")
 	def __unicode__(self):
 		return self.user.username
 
