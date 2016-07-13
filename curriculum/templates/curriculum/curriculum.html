@@ -7,7 +7,14 @@ This is CS50 AP
 
 {% block body %}
 
-<p class="headline">CS50 AP Curriculum{% if username != None %}: {{ username }}{% endif %}
+<p class="headline"> 
+   	{% if username  == None %}
+   		CS50 AP Curriculum
+   	{% elif location == None or location == "" %}
+   		CS50 AP Curriculum: {{ username }}
+   	{% else %}
+   		This is CS50 {{ location }}.
+   	{% endif %}
 	{% if username != None and username == user.username %}
         {% if not c_selected %}
 	    <a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>

@@ -172,6 +172,8 @@ def curriculum(request, username, chapter, module_slug):
     headercolor = None if username == None else user_by_username(username).userprofile.headercolor
     sidecolor = None if username == None else user_by_username(username).userprofile.sidecolor
     textcolor = None if username == None else user_by_username(username).userprofile.textcolor
+    # get location, to use in header
+    location = None if username == None else user_by_username(username).userprofile.location
     # determines whether a chapter is selected; if it is, need to get modules
     c_selected = (chapter != None)
     if (c_selected):
@@ -195,7 +197,7 @@ def curriculum(request, username, chapter, module_slug):
             mi = get_moduleinfo(User.objects.get(username=username), mod)
     return render(request, 'curriculum/curriculum.html', {'user':request.user, 'username':username, 'chapters':chapters, 'c_selected':c_selected, 'chapter':chapter, 'overview_url':overview_url,
         'modules':modules, 'm_selected':m_selected, 'mod':mod, 'collection':resources, 'modinfo':mi,
-        'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor})
+        'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor, 'location': location})
 
 # teacher-specific curriculum page, start landing page
 def teacher_page(request, username):
