@@ -229,4 +229,5 @@ def settings(request):
     headercolor = request.user.userprofile.headercolor
     sidecolor = request.user.userprofile.sidecolor
     textcolor = request.user.userprofile.textcolor
-    return render(request, 'curriculum/settings.html', {'user':request.user, 'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor})
+    location = request.user.userprofile.location
+    return render(request, 'curriculum/settings.html', {'user':request.user, 'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor, 'location':location})
