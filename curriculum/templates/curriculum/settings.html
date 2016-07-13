@@ -9,6 +9,9 @@
 {% block body %}
 <p class="headline">Settings</p>
 <br />
+<h4>Personal Settings</h4>
+<small>Note: This feature probably doesn't work yet.</small><br />
+Location: <input id="location" value="{{ location }}" type="text"><br />
 
 <h4>Site Settings</h4>
 <small>Note: These settings will only take effect on your personal CS50 AP site.</small><br />
@@ -54,12 +57,13 @@ function save() {
         user: {{ user.id }},
         bgcolor: $('#bgcolor-picker').val(),
         headercolor: $('#headercolor-picker').val(),
-        sidecolor: $("#sidecolor-picker").val(),
-        textcolor: $('#textcolor-picker').val()
+        sidecolor: $('#sidecolor-picker').val(),
+        textcolor: $('#textcolor-picker').val(),
+        location: $('#location').val()
     };
  
      var request = $.ajax({
-        url: "{% url 'curriculum:update_colors' %}",
+        url: "{% url 'curriculum:update_settings' %}",
         type: 'POST',
         data: parameters
      });
