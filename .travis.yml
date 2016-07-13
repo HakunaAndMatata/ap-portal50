@@ -5,3 +5,6 @@ python:
 install: "pip install django"
 # command to run tests
 script: python tests.py
+notifications:
+  email: false
+
