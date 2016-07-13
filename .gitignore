@@ -1,1 +1,3 @@
-*.pyc
+/curriculum/*.pyc
+/ap50/*.pyc
+/*.pyc
