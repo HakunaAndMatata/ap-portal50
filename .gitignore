@@ -1,3 +1,4 @@
 curriculum/*.pyc
+curriculum/migrations/*.pyc
 ap50/*.pyc
 *.pyc
