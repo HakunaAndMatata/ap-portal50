@@ -2,6 +2,7 @@ from curriculum.models import *
 from django.contrib.auth.models import User
 
 # takes care of any preparation needed before logging a user in each time
+# Generates Visibility settings for all resources that exist, in addition to Module Info supplements
 def login_prep(user):
     generate_visibilities(user)
     generate_moduleinfos(user)
@@ -37,7 +38,7 @@ def generate_visibilities(user):
 		vis_exists = len(ResourceVisibility.objects.filter(user__id=user.id,resource__id=resource.id))
 		if not vis_exists:
 			vis = ResourceVisibility.objects.create(user=user,resource=resource)
-			vis.visible = True
+			vis.visible = True if (resource.author == None) else False
 			vis.save()
             
 def generate_moduleinfos(user):
@@ -50,12 +51,12 @@ def generate_moduleinfos(user):
             info = Supplement.objects.create(user=user, module=module)
             info.save()
 
-# sets all resource visibilities to true
+# sets all CS50 reosurces to visible, and all custom resources to not visible
 def show_all_resources(user):
 	resources_vis = ResourceVisibility.objects.filter(user=user)
-	for resource_vis in resources_vis:
-		resource_vis.visible = True
-		resource_vis.save()
+	for rvis in resources_vis:
+		rvis.visible = True if (rvis.resource.author == None) else False
+		rvis.save()
 
 # returns chapter based on number specified
 def chapter_by_num(chapter_num):
@@ -139,22 +140,23 @@ def visible_modules(user,chapter):
 		modules.append(Module.objects.get(id=vis.module.id))
 	return modules
 
-# only worked for old resource types
+# gets list of resources set to be visible by a particular user, if it's accessible (by the user, or by CS50)
 def visible_resources(user,module):
 	vis_list = ResourceVisibility.objects.filter(user=user,resource__module=module,visible=True)
 	resources = {}
 	for vis in vis_list:
 		resource = Resource.objects.get(id=vis.resource.id)
-		if resource.rtype in resources:
-			resources[resource.rtype].append(resource)
-		else:
-			resources[resource.rtype] = [resource]
+        if resource.author == None or resource.author == user:
+            if resource.rtype in resources:
+                resources[resource.rtype].append(resource)
+            else:
+                resources[resource.rtype] = [resource]
 	return resources
 
-# only worked for old resource types
+# gets all CS50 resources (not custom ones)
 def all_resources(module):
 	resources = {}
-	resource_list = Resource.objects.filter(module=module)
+	resource_list = Resource.objects.filter(module=module, user=None)
 	for resource in resource_list:
 		if resource.rtype in resources:
 			resources[resource.rtype].append(resource)
@@ -169,18 +171,20 @@ def user_by_username(username):
 	u = User.objects.filter(username=username)
 	return u[0] if len(u) == 1 else None
 
+# gets list of visible and accessible resources out of those specified
 def vis_resources_in(resources, user):
-	# if no user specified, then it's the full curriculum: return everything
-	if user == None:
-		return resources
-	filtered = []
-	for resource in resources:
-		vis = ResourceVisibility.objects.filter(user=user, resource=resource)
-		if (len(vis) == 1):
-			vis = vis[0];
-			if (vis.visible == True):
-				filtered.append(resource)
-	return filtered
+    # if no user specified, then it's the full curriculum: return everything
+    if user == None:
+        return resources
+    filtered = []
+    for resource in resources:
+        if resource.author == None or resource.author == user:
+            vis = ResourceVisibility.objects.filter(user=user, resource=resource)
+            if (len(vis) == 1):
+                vis = vis[0];
+                if (vis.visible == True):
+                    filtered.append(resource)
+    return filtered
 
 # this generates the structure for how resources are displayed on a module page
 def resource_collection(user,module):
