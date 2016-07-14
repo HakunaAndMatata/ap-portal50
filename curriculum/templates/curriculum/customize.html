@@ -105,7 +105,7 @@ This is CS50 AP
 	</div>
 	<br /><br />
 	<hr>
-	<h3>Custom Module Information Panel:</h3>
+	<h3>Custom Module Information Panel</h3>
 	<h6>This information will be displayed to your students on your personal module page.</h6>
 	<div class="card card-default">
         <div class="card-block">
@@ -211,7 +211,7 @@ This is CS50 AP
 <script>
 $(document).ready(function() {
     $('#navbar-customize').addClass("active");
-    $('#resource-table, #cresource-table').DataTable({
+    $('#resource-table').DataTable({
                 responsive: true,
                 "iDisplayLength": 10,
             	"language": {
@@ -223,6 +223,28 @@ $(document).ready(function() {
                     '</select> resources',
                 "sInfo": "Showing _START_ to _END_ of _TOTAL_ resources",
                 "sEmptyTable": "There are no resources matching your query.",
+                "columns" : [
+                    null,
+                    null,
+                    { "width" : "50%" },
+                    null,
+                    null
+                ]
+            }
+        });
+    
+    $('#cresource-table').DataTable({
+                responsive: true,
+                "iDisplayLength": 10,
+            	"language": {
+                "lengthMenu": 'Display <select class="form-control">'+
+                	'<option value="5">5</option>'+
+                    '<option value="10">10</option>'+
+                    '<option value="15">15</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select> resources',
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ resources",
+                "sEmptyTable": "There are no custom resources.",
                 "columns" : [
                     null,
                     null,
