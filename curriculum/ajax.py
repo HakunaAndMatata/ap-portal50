@@ -66,6 +66,10 @@ def add_resource(request):
             return HttpResponse(json.dumps({"result" : "Failure: No resource type specified."}))
         rtype = ResourceType.objects.get(name=rtype)
         resource = Resource.objects.create(author=request.user, module=module, rtype=rtype, name=name, content=content, link=link)
+        # set default to visible
+        rv = resource_visibility(request.user, resource.id)
+        rv.visible = True
+        rv.save()
         return HttpResponse(json.dumps({"result" : "Success"}))
     
 def remove_resource(request):
