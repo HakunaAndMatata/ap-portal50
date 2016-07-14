@@ -61,6 +61,8 @@ class Resource(models.Model):
     content = models.CharField(max_length=512,default="",blank=True, verbose_name="description")
     link = models.CharField(max_length=512,default="",blank=True)
     private = models.BooleanField(default=False)
+    author = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE) # the 'None' author refers to CS50 resources
+    shared = models.BooleanField(default=False) # 'shared' applies to teacher resources, determines whether they are viewable by other teachers
     def __unicode__(self):
 		return self.name
 
