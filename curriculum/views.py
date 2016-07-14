@@ -126,15 +126,23 @@ def custom(request, arg, chapter_num, module_slug):
         if (mvis == None):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'There was an error accessing visibility settings.'})
         # get resources in chapter, and get visibility statuses for each
-        resources = Resource.objects.filter(module=module)
+        resources = all_resources_nocat(module)
         fullResources = []
         for resource in resources:
             resource.visible = resource_visibility(request.user,resource.id).visible
             fullResources.append(resource)
+        # get custom resources for user, along with visibility settings
+        cresources = all_cresources_nocat(request.user, module)
+        fullCResources = []
+        for cresource in cresources:
+            cresource.visible = resource_visibility(request.user,cresource.id).visible
+            fullCResources.append(cresource)
         # get the current module supplement text
         modinfo = get_moduleinfo(request.user, module)
+        # get list of resource types for adding a custom resource
+        rtypes = ResourceType.objects.all()
         return render(request, 'curriculum/customize.html',
-            {'user':request.user, 'chapters':chapters, 'modules':fullModules, 'arg':arg, 'chapter':chapter, 'vis':vis, 'mod':module, 'mvis':mvis, 'resources':resources, 'modinfo':modinfo})
+            {'user':request.user, 'chapters':chapters, 'modules':fullModules, 'arg':arg, 'chapter':chapter, 'vis':vis, 'mod':module, 'mvis':mvis, 'resources':fullResources, 'cresources':fullCResources, 'rtypes':rtypes, 'modinfo':modinfo})
     # user is on the starting page
     else:
         return render(request, 'curriculum/customize.html',

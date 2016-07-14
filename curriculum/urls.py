@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^ajax/module-toggle/$', ajax.module_toggle, name='module_toggle'),
     url(r'^ajax/chapter-toggle/$', ajax.chapter_toggle, name='chapter_toggle'),
     url(r'^ajax/update-settings/$', ajax.update_settings, name='update_settings'),
+    url(r'^ajax/add-resource/$', ajax.add_resource, name='add_resource'),
+    url(r'^ajax/remove-resource/$', ajax.remove_resource, name='remove_resource'),
 
 	# both /brian and /u/brian will go to the user's curriculum page
 	url(r'^(?P<username>[\w.@+-]+)/$', views.teacher_page, name='teacher_page'),

@@ -52,4 +52,22 @@ def update_settings(request):
         user.userprofile.location = request.POST.get('location')
         user.userprofile.save()
         return HttpResponse(json.dumps({"result" : "Success"}))
-        
+    
+def add_resource(request):
+    if request.method == 'POST':
+        module = Module.objects.get(pk=request.POST.get('module'))
+        rtype = request.POST.get('rtype')
+        name = request.POST.get('name')
+        content = request.POST.get('content')
+        link = request.POST.get('link')
+        if rtype == 0:
+            return HttpResponse(json.dumps({"result" : "Failure: No resource type specified."}))
+        rtype = ResourceType.objects.get(name=rtype)
+        resource = Resource.objects.create(author=request.user, module=module, rtype=rtype, name=name, content=content, link=link)
+        return HttpResponse(json.dumps({"result" : "Success"}))
+    
+def remove_resource(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        remove_resource_and_vis(id)
+        return HttpResponse(json.dumps({"result" : "Success"}))

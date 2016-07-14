@@ -164,6 +164,14 @@ def all_resources(module):
 			resources[resource.rtype] = [resource]
 	return resources
 
+# gets all CS50 resources (not custom ones), without categorizing
+def all_resources_nocat(module):
+    return Resource.objects.filter(module=module, author=None)
+
+# gets all custom resources for user, without categorizing
+def all_cresources_nocat(user, module):
+    return Resource.objects.filter(module=module, author=user)
+
 def user_by_username(username):
 	# if there's no username, then there's no user
 	if username == None:
@@ -217,3 +225,9 @@ def get_moduleinfo(user, module):
         return info
     else:
         return lst[0]
+
+# removes a resource after first removing any visibilities attached to the resource
+def remove_resource_and_vis(id):
+    resource = Resource.objects.get(pk=id)
+    ResourceVisibility.objects.filter(resource=resource).delete()
+    resource.delete()
