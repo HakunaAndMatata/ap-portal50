@@ -235,6 +235,10 @@ def resources(request):
 
 # handles settings
 def settings(request):
+    if not request.user.is_authenticated():
+        return render(request, 'curriculum/error.html', {'user':request.user, 'error':'You are not currently logged in.'})
+    if (not request.user.is_authenticated()) or (not request.user.userprofile.approved):
+        return index(request)
     bgcolor = request.user.userprofile.bgcolor
     headercolor = request.user.userprofile.headercolor
     sidecolor = request.user.userprofile.sidecolor
