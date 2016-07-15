@@ -65,6 +65,11 @@ class Resource(models.Model):
     shared = models.BooleanField(default=False) # 'shared' applies to teacher resources, determines whether they are viewable by other teachers
     def __unicode__(self):
 		return self.name
+    
+class Page(models.Model):
+    name = models.CharField(max_length=512)
+    contents = models.TextField(default="")
+    slug = models.SlugField(default="")
 
 # Teacher-specific supplement
 class Supplement(models.Model):
