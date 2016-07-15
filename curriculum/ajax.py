@@ -60,7 +60,7 @@ def add_resource(request):
         name = request.POST.get('name')
         content = request.POST.get('content')
         link = request.POST.get('link')
-        if 'http://' not in link and 'https://' not in link:
+        if 'http://' not in link and 'https://' not in link and link != "":
             link = 'http://' + link
         if rtype == 0:
             return HttpResponse(json.dumps({"result" : "Failure: No resource type specified."}))
