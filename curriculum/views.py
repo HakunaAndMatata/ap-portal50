@@ -254,3 +254,12 @@ def show_page(request, pagename):
         return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The page you requested does not exist.'})
     page = page[0]
     return render(request, 'curriculum/page.html', {'user':request.user, 'name':page.name, 'contents':page.contents})
+
+# public profile page for teachers
+def profile(request, username):
+    user = User.objects.filter(username=username)
+    if (len(user) == 0):
+        return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The user you requested does not exist.'})
+    user = user[0]
+    profile = user.userprofile
+    return render(request, 'curriculum/profile.html', {'user':request.user, 'target':user, 'target_profile':profile})
