@@ -5,29 +5,31 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class UserProfile(models.Model):
-	user = models.OneToOneField(User)
-	school = models.CharField(max_length=200, blank=True)
-	school_proof = models.CharField(max_length=500, blank=True, verbose_name="proof of status")
-
-	#defines the user types
-	DEVELOPER = 'DEV'
-	ADMINISTRATOR = 'ADM'
-	CONTENT = 'CNT'
-	TEACHER = 'TCH'
-	ACCT_TYPE_CHOICES = (
-		(ADMINISTRATOR, 'Admin'),
-		(CONTENT, 'Content'),
-		(TEACHER, 'Teacher')
-	)
-	acct_type = models.CharField(max_length=3, choices=ACCT_TYPE_CHOICES, default=TEACHER)
-	approved = models.BooleanField(default=False)
-	location = models.CharField(max_length=300, default="")
-	bgcolor = models.CharField(max_length=7, default="F0F3F6")
-	headercolor = models.CharField(max_length=7, default="D7DDE4")
-	sidecolor = models.CharField(max_length=7, default="3A4651")
-	textcolor = models.CharField(max_length=7, default="4F5F6F")
-	def __unicode__(self):
-		return self.user.username
+    user = models.OneToOneField(User)
+    school = models.CharField(max_length=200, blank=True)
+    school_proof = models.CharField(max_length=500, blank=True, verbose_name="proof of status")
+    
+    #defines the user types
+    DEVELOPER = 'DEV'
+    ADMINISTRATOR = 'ADM'
+    CONTENT = 'CNT'
+    TEACHER = 'TCH'
+    ACCT_TYPE_CHOICES = (
+        (ADMINISTRATOR, 'Admin'),
+        (CONTENT, 'Content'),
+        (TEACHER, 'Teacher')
+    )
+    acct_type = models.CharField(max_length=3, choices=ACCT_TYPE_CHOICES, default=TEACHER)
+    approved = models.BooleanField(default=False)
+    location = models.CharField(max_length=300, default="")
+    bgcolor = models.CharField(max_length=7, default="F0F3F6")
+    headercolor = models.CharField(max_length=7, default="D7DDE4")
+    sidecolor = models.CharField(max_length=7, default="3A4651")
+    textcolor = models.CharField(max_length=7, default="4F5F6F")
+    bio = models.TextField(default="")
+    profile_public = models.BooleanField(default=False)
+    def __unicode__(self):
+        return self.user.username
 
 class Chapter(models.Model):
 	num = models.IntegerField(unique=True, verbose_name="chapter number")
