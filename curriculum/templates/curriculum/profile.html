@@ -1,0 +1,35 @@
+{% extends 'curriculum/base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<p class="headline">Teacher Profile: {{ target.first_name }} {{ target.last_name }}
+    <a href="{% url 'curriculum:teacher_page' target.username %}" class="btn btn-default" style="float:right;">View Site</a>
+</p>
+<br />
+{% if target_profile.location != "" %}
+<h4>I teach CS50 {{ target_profile.location }}.</h4>
+{% else %}
+I teach CS50.
+{% endif %}
+<br /><br />
+
+{% if target_profile.bio == "" %}
+This user's profile is currently empty.
+{% else %}
+
+{{ target_profile.bio }}
+{% endif %}
+
+<br /><br />
+Contact Information: <a href="mailto:{{ target.email }}">{{ target.email }}</a>
+{% endblock %}
+
+
+{% block script %}
+<script>
+$(document).ready(function() {
+   
+});
+    
+</script>
+{% endblock %}

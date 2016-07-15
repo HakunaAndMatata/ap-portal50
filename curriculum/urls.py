@@ -21,6 +21,8 @@ urlpatterns = [
     
     url(r'^page/(?P<pagename>[\w.@+-]+)/$', views.show_page, name='show_page'),
     
+    url(r'^profile/(?P<username>[\w.@+-]+)/$', views.profile, name='profile'),
+    
     url(r'^ajax/modinfochange/$', ajax.update_modinfo, name='update_modinfo'),
     url(r'^ajax/resource-toggle/$', ajax.resource_toggle, name='resource_toggle'),
     url(r'^ajax/module-toggle/$', ajax.module_toggle, name='module_toggle'),
