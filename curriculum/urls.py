@@ -19,6 +19,8 @@ urlpatterns = [
 	url(r'^curriculum/(?P<chapter>[0-9]+)/$', views.curriculum_page_chapter, name='curriculum_page_chapter'),
 	url(r'^curriculum/(?P<chapter>[0-9]+)/(?P<slug>[\w.@+-]+)/$', views.curriculum_page_module, name='curriculum_page_module'),
     
+    url(r'^page/(?P<pagename>[\w.@+-]+)/$', views.show_page, name='show_page'),
+    
     url(r'^ajax/modinfochange/$', ajax.update_modinfo, name='update_modinfo'),
     url(r'^ajax/resource-toggle/$', ajax.resource_toggle, name='resource_toggle'),
     url(r'^ajax/module-toggle/$', ajax.module_toggle, name='module_toggle'),

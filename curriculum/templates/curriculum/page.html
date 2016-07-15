@@ -1,0 +1,23 @@
+{% extends 'curriculum/base.html' %}
+{% load staticfiles %}
+
+{% block header %}
+{{ block.super }}
+<script src="{% static 'curriculum/jscolor-2.0.4/jscolor.min.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<p class="headline">{{ name }}</p>
+<br />
+This is a sample page.
+{% endblock %}
+
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    $('#navbar-curriculum').addClass('active');
+});
+    
+</script>
+{% endblock %}

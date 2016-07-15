@@ -245,3 +245,12 @@ def settings(request):
     textcolor = request.user.userprofile.textcolor
     location = request.user.userprofile.location
     return render(request, 'curriculum/settings.html', {'user':request.user, 'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor, 'location':location})
+
+# displays the site's individual pages
+def show_page(request, pagename):
+    print pagename
+    page = Page.objects.filter(slug=pagename)
+    if (len(page) == 0):
+        return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The page you requested does not exist.'})
+    page = page[0]
+    return render(request, 'curriculum/page.html', {'user':request.user, 'name':page.name, 'contents':page.contents})
