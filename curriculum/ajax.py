@@ -77,3 +77,35 @@ def remove_resource(request):
         id = request.POST.get('id')
         remove_resource_and_vis(id)
         return HttpResponse(json.dumps({"result" : "Success"}))
+        
+def access_resource(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        # id is the resourceID of the resource we want information about
+        resource = Resource.objects.get(id=id)
+        response = {}
+        response["rtype"] = resource.rtype.name
+        response["name"] = resource.name
+        response["content"] = resource.content
+        response["link"] = resource.link
+        
+        # return json object with what we want to know about that resource
+        return HttpResponse(json.dumps(response))
+        
+def edit_resource(request):
+    if request.method == 'POST':
+        # first get the original resource from that type
+        id = request.POST.get('id')
+        resource = Resource.objects.get(id=id)
+        # then process the other fields from that resource, update and save
+        resource.rtype = ResourceType.objects.get(name=request.POST.get('rtype'))
+        resource.name = request.POST.get('name')
+        resource.content = request.POST.get('content')
+        link = request.POST.get('link')
+        if 'http://' not in link and 'https://' not in link and link != "":
+            link = 'http://' + link
+        resource.link = link
+        #save all the edits (hopefully there are edits?)
+        resource.save()
+        return HttpResponse(json.dumps({"result" : "Success"}))
+    

@@ -127,7 +127,7 @@ This is CS50 AP
 					<th>Resource</th>
 					<th>Resource Type</th>
 					<th>Resource Link</th>
-					<th>Delete</th>
+					<th>Edit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -138,7 +138,7 @@ This is CS50 AP
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
 					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
-					<td><button onclick="removeResource({{ resource.id }})" class="btn btn-xs btn-danger">Delete</button></td>
+					<td><button onclick="showEditResource( {{resource.id}} )" class="btn btn-xs btn-primary">Edit</button></td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -197,32 +197,37 @@ This is CS50 AP
         <input type="text" id="add-resource-link" class="form-control" placeholder="Resource Link">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button onclick="addResource()" type="button" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Add Edit modal -->
-<div id="add-resource-modal" class="modal fade" role="dialog" tabindex="-1">
+<!-- edit resource modal -->
+<div id="edit-resource-modal" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Testing Resources </h4>
+        <h4 class="modal-title">Edit Resource</h4>
       </div>
       <div class="modal-body">
-        <select id="add-resource-rtype" class="form-control">
-            <option value=0 disabled selected>Choose a Resource Type</option>
+        <select id="edit-resource-rtype" class="form-control">
             {% for rtype in rtypes %}
             <option value="{{ rtype.name }}">{{ rtype.name }}</option>
             {% endfor %}
         </select>
+        <br />
+        <input type="text" id="edit-resource-name" class="form-control" placeholder="Resource Name">
+        <br />
+        <textarea class="form-control" rows="5" style="width:100%" autofocus id="edit-resource-content" placeholder="Resource Contents (optional)"></textarea>
+        <br />
+        <input type="text" id="edit-resource-link" class="form-control" placeholder="Resource Link">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button onclick="addResource()" type="button" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <span id="saveChangeArea"></span>
       </div>
     </div>
   </div>
@@ -353,6 +358,7 @@ function toggleResource(resource_id) {
  });
 }
 
+// save for the custom module information panel
 function save() {
     var parameters = {
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -400,24 +406,81 @@ function addResource() {
 	});
 }
 
+function showEditResource(id) {
+    // get module to show up
+    $("#edit-resource-modal").modal();
+    // need to fill in the boxes with the right resource ID
+    var parameters = {
+        // only getting requests from sites authorizing
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        id: id
+    };
+    // make ajax request to curriculm/urls.py
+    var request = $.ajax({
+        url: "{% url 'curriculum:access_resource' %}",
+        type: 'POST',
+        data: parameters
+    });
+    
+    // when request is done
+    request.done(function(response, textStatus, jqXHR) {
+        // turn string into json object
+        data = jQuery.parseJSON(response);
+        // load elements of text box
+        $("#edit-resource-rtype").val(data["rtype"]);
+        $("#edit-resource-name").val(data["name"]);
+        $("#edit-resource-content").val(data["content"]);
+        $("#edit-resource-link").val(data["link"]);
+        $("#saveChangeArea").html('<button onclick="editResource('+id+')" type="button" class="btn btn-primary">Save Changes</button>');
+    })
+    
+     request.fail(function(jqXHR, textStatus, errorThrown) {
+    	console.log(errorThrown);
+    });
+}
+
+function editResource(id) {
+    var parameters = {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        id: id,
+        content: $('#edit-resource-content').val(),
+        link: $('#edit-resource-link').val(),
+        name: $('#edit-resource-name').val(),
+        rtype: $('#edit-resource-rtype').val()
+    }
+    
+    var request = $.ajax({
+        url: "{% url 'curriculum:edit_resource' %}",
+        type: 'POST',
+        data: parameters
+    });
+    
+    request.done(function(response, textStatus, jqXHR) {
+        location.reload(true);
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+	});
+}
 function removeResource(id) {
     var parameters = {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         id: id
     };
  
- var request = $.ajax({
+    var request = $.ajax({
     url: "{% url 'curriculum:remove_resource' %}",
     type: 'POST',
     data: parameters
- });
- 
- request.done(function(response, textStatus, jqXHR) {
+    });
+    
+    request.done(function(response, textStatus, jqXHR) {
     location.reload(true);
- });
- request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
- });
+    });
+    
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+    	console.log(errorThrown);
+    });
 }
 
 
