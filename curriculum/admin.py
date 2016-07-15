@@ -73,6 +73,7 @@ admin_site.register(Module, ModuleAdmin)
 admin_site.register(Resource, ResourceAdmin)
 admin_site.register(ResourceType, ResourceTypeAdmin)
 admin_site.register(Supplement)
+admin_site.register(Page)
 
 # Getting rid of visibilities from admin site
 # admin_site.register(ChapterVisibility)

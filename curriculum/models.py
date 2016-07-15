@@ -70,6 +70,9 @@ class Page(models.Model):
     name = models.CharField(max_length=512)
     contents = models.TextField(default="")
     slug = models.SlugField(default="")
+    private = models.BooleanField(default=False)
+    def __unicode__(self):
+        return self.name
 
 # Teacher-specific supplement
 class Supplement(models.Model):
