@@ -162,8 +162,14 @@ This is CS50 AP
 			<tbody>
 				{% for resource in resources %}
 					<tr>
-					<td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
-					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+					{% if resource.private == False%}
+					    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+					    <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+					{% else %}
+					    <td>Private</td>
+					    <td>No</td>
+					{% endif %}
+					
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
 					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>

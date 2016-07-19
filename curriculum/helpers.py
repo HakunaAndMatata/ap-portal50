@@ -180,6 +180,7 @@ def user_by_username(username):
 	return u[0] if len(u) == 1 else None
 
 # gets list of visible and accessible resources out of those specified
+# will filter those resources by author
 def vis_resources_in(resources, user):
     # if no user specified, then it's the full curriculum: return everything
     if user == None:
@@ -195,6 +196,7 @@ def vis_resources_in(resources, user):
     return filtered
 
 # this generates the structure for how resources are displayed on a module page
+# will not display private resources, per generate_resources
 def resource_collection(user,module):
 	columns = [None, None]
 	# goes through columns 0 and 1
@@ -211,8 +213,9 @@ def generate_rows(col, user,module):
 			rows.append({'name' : t.name, 'resources' : resources})
 	return rows
 
+# generates all resources of a certain type, including
 def generate_resources(rtype, user, module):
-	resources = Resource.objects.filter(rtype=rtype,module=module)
+	resources = Resource.objects.filter(rtype=rtype,module=module,private=False)
 	return vis_resources_in(resources,user)
 
 # helper function for module info supplements
