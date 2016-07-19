@@ -66,9 +66,11 @@
        {% block sidebar %}
        <aside class="sidebar">
            <div class="sidebar-container">
+               {% block sidebar-header %}
                <div class="sidebar-header">
-                   <div class="brand"><a class="brand-link" href="{% url 'curriculum:index' %}"><i class="fa fa-code icon"></i>&nbsp;&nbsp;CS50 AP</a></div>
+                   <div class="brand"><a class="brand-link" href="{% url 'curriculum:index' %}"><i class="fa fa-code"></i>&nbsp;&nbsp;CS50 AP</a></div>
                </div>
+               {% endblock %}
                <nav class="menu">
                    <ul class="nav metismenu" id="sidebar-menu">
                        <li id="navbar-home">

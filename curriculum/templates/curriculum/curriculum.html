@@ -5,8 +5,16 @@
 This is CS50 AP
 {% endblock %}
 
-{% block body %}
+<!-- Custom Logo on Sidebar -->
+{% block sidebar-header %}
+	{% if username != None and logo != None %}
+		<img src={{ logo }} width="100%">
+	{% else %}
+	    {{block.super}}
+	{% endif %}
+{% endblock %}
 
+{% block body %}
 <p class="headline"> 
    	{% if username  == None %}
    		CS50 AP Curriculum

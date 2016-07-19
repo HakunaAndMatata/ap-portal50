@@ -50,6 +50,7 @@ def update_settings(request):
         user.userprofile.sidecolor = request.POST.get('sidecolor')
         user.userprofile.textcolor = request.POST.get('textcolor')
         user.userprofile.location = request.POST.get('location')
+        user.userprofile.logo = request.POST.get('logo')
         user.userprofile.save()
         return HttpResponse(json.dumps({"result" : "Success"}))
     

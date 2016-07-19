@@ -12,6 +12,9 @@
 <h4>Personal Settings</h4>
 <small>Note: This location appears as the heading to your curriculum page</small><br />
 Location: <input id="location" value="{{ location }}" type="text"><br />
+<!-- adding a temporary school logo option: May have to be rethought when we deploy -->
+<small>Please provide a link to an image.</small><br />
+School Logo: <input id="logo" value="{{ logo }}" type="text"><br />
 
 <h4>Site Settings</h4>
 <small>Note: These settings will only take effect on your personal CS50 AP site.</small><br />
@@ -59,7 +62,8 @@ function save() {
         headercolor: $('#headercolor-picker').val(),
         sidecolor: $('#sidecolor-picker').val(),
         textcolor: $('#textcolor-picker').val(),
-        location: $('#location').val()
+        location: $('#location').val(),
+        logo: $('#logo').val()
     };
  
      var request = $.ajax({
