@@ -60,13 +60,22 @@ def add_resource(request):
         name = request.POST.get('name')
         content = request.POST.get('content')
         link = request.POST.get('link')
+        public = request.POST.get('public') == "true"
+        print "THIS IS THE VALUE OF PUBLIC: "
+        print public
         if 'http://' not in link and 'https://' not in link and link != "":
             link = 'http://' + link
         if rtype == 0:
             return HttpResponse(json.dumps({"result" : "Failure: No resource type specified."}))
         rtype = ResourceType.objects.get(name=rtype)
-        resource = Resource.objects.create(author=request.user, module=module, rtype=rtype, name=name, content=content, link=link)
-        # set default to visible
+        resource = Resource.objects.create(author=request.user, module=module, rtype=rtype, name=name, content=content, link=link, shared=public)
+        # set default to not visible for all users
+        users = User.objects.all()
+        for user in users:
+            vis = ResourceVisibility.objects.create(user=user,resource=resource)
+            vis.visible = False
+            vis.save()
+        # set default to visible for this user
         rv = resource_visibility(request.user, resource.id)
         rv.visible = True
         rv.save()
@@ -88,7 +97,9 @@ def access_resource(request):
         response["name"] = resource.name
         response["content"] = resource.content
         response["link"] = resource.link
-        
+        response["shared"] = resource.shared
+        print "I wonder if it's shared now?"
+        print response["shared"]
         # return json object with what we want to know about that resource
         return HttpResponse(json.dumps(response))
         
@@ -101,11 +112,14 @@ def edit_resource(request):
         resource.rtype = ResourceType.objects.get(name=request.POST.get('rtype'))
         resource.name = request.POST.get('name')
         resource.content = request.POST.get('content')
+        resource.shared = request.POST.get('public') == "true"
         link = request.POST.get('link')
         if 'http://' not in link and 'https://' not in link and link != "":
             link = 'http://' + link
         resource.link = link
         #save all the edits (hopefully there are edits?)
         resource.save()
+        print "Is it shared?"
+        print resource.shared
         return HttpResponse(json.dumps({"result" : "Success"}))
     

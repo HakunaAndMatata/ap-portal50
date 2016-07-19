@@ -162,7 +162,7 @@ This is CS50 AP
 			<tbody>
 				{% for resource in resources %}
 					<tr>
-					{% if resource.private == False%}
+					{% if resource.private == False %}
 					    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
 					    <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
 					{% else %}
@@ -173,6 +173,36 @@ This is CS50 AP
 					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
 					<td>{{ resource.rtype }}</td>
 					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+	<br /><br />
+    <hr>
+    <h3>Shared Resources from Other Teachers</h3>
+    <div class="dt_wrapper">
+		<table width="100%" class="table table-striped table-bordered table-hover dataTable" id="sresource-table">
+			<thead>
+				<tr>
+					<th>Toggle</th>
+					<th>Visible</th>
+					<th>Resource</th>
+					<th>Resource Type</th>
+					<th>Resource Link</th>
+					<th>Added By</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for resource in sresources %}
+					<tr>
+					<td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
+					<td>{{ resource.rtype }}</td>
+					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
+					<td>{{ resource.author_name }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -201,6 +231,8 @@ This is CS50 AP
         <textarea class="form-control" rows="5" style="width:100%" autofocus id="add-resource-content" placeholder="Resource Contents (optional)"></textarea>
         <br />
         <input type="text" id="add-resource-link" class="form-control" placeholder="Resource Link">
+        <br />
+        <input type="checkbox" id="add-resource-public" checked=true>&nbsp;&nbsp;&nbsp;Share Resource with Other CS50 AP Teachers
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -230,6 +262,8 @@ This is CS50 AP
         <textarea class="form-control" rows="5" style="width:100%" autofocus id="edit-resource-content" placeholder="Resource Contents (optional)"></textarea>
         <br />
         <input type="text" id="edit-resource-link" class="form-control" placeholder="Resource Link">
+        <br />
+        <input type="checkbox" id="edit-resource-public" checked=true>&nbsp;&nbsp;&nbsp;Share Resource with Other CS50 AP Teachers
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -299,6 +333,28 @@ $(document).ready(function() {
                     '</select> resources',
                 "sInfo": "Showing _START_ to _END_ of _TOTAL_ resources",
                 "sEmptyTable": "There are no custom resources.",
+                "columns" : [
+                    null,
+                    null,
+                    { "width" : "50%" },
+                    null,
+                    null
+                ]
+            }
+        });
+    
+     $('#sresource-table').DataTable({
+                responsive: true,
+                "iDisplayLength": 10,
+            	"language": {
+                "lengthMenu": 'Display <select class="form-control">'+
+                	'<option value="5">5</option>'+
+                    '<option value="10">10</option>'+
+                    '<option value="15">15</option>'+
+                    '<option value="-1">All</option>'+
+                    '</select> resources',
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ resources",
+                "sEmptyTable": "There are no shared resources.",
                 "columns" : [
                     null,
                     null,
@@ -414,7 +470,8 @@ function addResource() {
         content: $('#add-resource-content').val(),
         link: $('#add-resource-link').val(),
         name: $('#add-resource-name').val(),
-        rtype: $('#add-resource-rtype').val()
+        rtype: $('#add-resource-rtype').val(),
+        public: $('#add-resource-public').prop('checked')
     }
     
     var request = $.ajax({
@@ -456,6 +513,8 @@ function showEditResource(id) {
         $("#edit-resource-name").val(data["name"]);
         $("#edit-resource-content").val(data["content"]);
         $("#edit-resource-link").val(data["link"]);
+        console.log(data["shared"]);
+        $("#edit-resource-public").prop('checked', data["shared"]);
         // makes a delete button
         var button = '<button onclick="showConfirmation('+id+')" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>';
         // add an edit button
@@ -476,7 +535,8 @@ function editResource(id) {
         content: $('#edit-resource-content').val(),
         link: $('#edit-resource-link').val(),
         name: $('#edit-resource-name').val(),
-        rtype: $('#edit-resource-rtype').val()
+        rtype: $('#edit-resource-rtype').val(),
+        public: $('#edit-resource-public').prop('checked')
     }
     
     var request = $.ajax({

@@ -172,6 +172,12 @@ def all_resources_nocat(module):
 def all_cresources_nocat(user, module):
     return Resource.objects.filter(module=module, author=user)
 
+# gets all shared resources without categorizing
+def all_sresources_nocat(user, module):
+    # gets the resources, but excludes those by CS50 or by the user themselves
+    return Resource.objects.filter(module=module).exclude(author=None).exclude(author=user)
+    
+
 def user_by_username(username):
 	# if there's no username, then there's no user
 	if username == None:
@@ -180,14 +186,14 @@ def user_by_username(username):
 	return u[0] if len(u) == 1 else None
 
 # gets list of visible and accessible resources out of those specified
-# will filter those resources by author
 def vis_resources_in(resources, user):
     # if no user specified, then it's the full curriculum: return everything
     if user == None:
         return resources
     filtered = []
     for resource in resources:
-        if resource.author == None or resource.author == user:
+        # Accessible resource: by CS50, by the current user, or if it's shared by somone else
+        if resource.author == None or resource.author == user or resource.shared == True:
             vis = ResourceVisibility.objects.filter(user=user, resource=resource)
             if (len(vis) == 1):
                 vis = vis[0];

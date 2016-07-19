@@ -137,12 +137,19 @@ def custom(request, arg, chapter_num, module_slug):
         for cresource in cresources:
             cresource.visible = resource_visibility(request.user,cresource.id).visible
             fullCResources.append(cresource)
+        # get shared resources for user, along with visibility settings
+        sresources = all_sresources_nocat(request.user, module)
+        fullSResources = []
+        for sresource in sresources:
+            sresource.visible = resource_visibility(request.user, sresource.id).visible
+            sresource.author_name = sresource.author.first_name + " " + sresource.author.last_name
+            fullSResources.append(sresource)
         # get the current module supplement text
         modinfo = get_moduleinfo(request.user, module)
         # get list of resource types for adding a custom resource
         rtypes = ResourceType.objects.all()
         return render(request, 'curriculum/customize.html',
-            {'user':request.user, 'chapters':chapters, 'modules':fullModules, 'arg':arg, 'chapter':chapter, 'vis':vis, 'mod':module, 'mvis':mvis, 'resources':fullResources, 'cresources':fullCResources, 'rtypes':rtypes, 'modinfo':modinfo})
+            {'user':request.user, 'chapters':chapters, 'modules':fullModules, 'arg':arg, 'chapter':chapter, 'vis':vis, 'mod':module, 'mvis':mvis, 'resources':fullResources, 'cresources':fullCResources, 'sresources':fullSResources, 'rtypes':rtypes, 'modinfo':modinfo})
     # user is on the starting page
     else:
         return render(request, 'curriculum/customize.html',
