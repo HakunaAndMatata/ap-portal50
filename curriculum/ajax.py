@@ -8,7 +8,11 @@ from django.contrib.auth.models import User
 
 def update_modinfo(request):
     if request.method == 'POST':
-        user = request.POST.get('user')
+        user = int(request.POST.get('user'))
+        print request.user.id
+        print user
+        if request.user.id != user:
+            return HttpResponse(json.dumps({"success":False}))
         module = request.POST.get('module')
         contents = request.POST.get('contents')
         mi = Supplement.objects.get(user__id=user, module__id=module)
@@ -20,6 +24,8 @@ def update_modinfo(request):
 def resource_toggle(request):
     if request.method == 'POST':
         user = User.objects.get(id=request.POST.get('user'))
+        if request.user.id != user.id:
+            return HttpResponse(json.dumps({"success":False}))
         resource_id = request.POST.get('resource_id')
         toggle_resource_visibility(user, resource_id)
         response = {"new_val" : resource_visibility(user, resource_id).visible}
@@ -28,6 +34,8 @@ def resource_toggle(request):
 def module_toggle(request):
     if request.method == 'POST':
         user = User.objects.get(id=request.POST.get('user'))
+        if request.user.id != user.id:
+            return HttpResponse(json.dumps({"success":False}))
         module_num = request.POST.get('module_num')
         chapter_num = request.POST.get('chapter_num')
         toggle_module_visibility(user, module_num, chapter_num)
@@ -37,6 +45,8 @@ def module_toggle(request):
 def chapter_toggle(request):
     if request.method == 'POST':
         user = User.objects.get(id=request.POST.get('user'))
+        if request.user.id != user.id:
+            return HttpResponse(json.dumps({"success":False}))
         chapter_num = request.POST.get('chapter_num')
         toggle_chapter_visibility(user, chapter_num)
         response = {"new_val" : chapter_visibility(user, chapter_num).visible}
@@ -56,14 +66,14 @@ def update_settings(request):
     
 def add_resource(request):
     if request.method == 'POST':
+        if request.user == None:
+            return HttpResponse(json.dumps({"success" : False}))
         module = Module.objects.get(pk=request.POST.get('module'))
         rtype = request.POST.get('rtype')
         name = request.POST.get('name')
         content = request.POST.get('content')
         link = request.POST.get('link')
         public = request.POST.get('public') == "true"
-        print "THIS IS THE VALUE OF PUBLIC: "
-        print public
         if 'http://' not in link and 'https://' not in link and link != "":
             link = 'http://' + link
         if rtype == 0:
@@ -80,13 +90,16 @@ def add_resource(request):
         rv = resource_visibility(request.user, resource.id)
         rv.visible = True
         rv.save()
-        return HttpResponse(json.dumps({"result" : "Success"}))
+        return HttpResponse(json.dumps({"success" : True}))
     
 def remove_resource(request):
     if request.method == 'POST':
         id = request.POST.get('id')
+        resource = Resource.objects.get(pk=id)
+        if resource.author != request.user:
+            return HttpResponse(json.dumps({"success" : False}))
         remove_resource_and_vis(id)
-        return HttpResponse(json.dumps({"result" : "Success"}))
+        return HttpResponse(json.dumps({"success" : True}))
         
 def access_resource(request):
     if request.method == 'POST':
@@ -99,8 +112,6 @@ def access_resource(request):
         response["content"] = resource.content
         response["link"] = resource.link
         response["shared"] = resource.shared
-        print "I wonder if it's shared now?"
-        print response["shared"]
         # return json object with what we want to know about that resource
         return HttpResponse(json.dumps(response))
         
@@ -109,6 +120,8 @@ def edit_resource(request):
         # first get the original resource from that type
         id = request.POST.get('id')
         resource = Resource.objects.get(id=id)
+        if resource.author != request.user:
+            return HttpResponse(json.dumps({"success" : False}))
         # then process the other fields from that resource, update and save
         resource.rtype = ResourceType.objects.get(name=request.POST.get('rtype'))
         resource.name = request.POST.get('name')
@@ -120,7 +133,5 @@ def edit_resource(request):
         resource.link = link
         #save all the edits (hopefully there are edits?)
         resource.save()
-        print "Is it shared?"
-        print resource.shared
-        return HttpResponse(json.dumps({"result" : "Success"}))
+        return HttpResponse(json.dumps({"success" : True}))
     

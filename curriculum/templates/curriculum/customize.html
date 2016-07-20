@@ -61,7 +61,7 @@ This is CS50 AP
 					<td>
 						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
 					</td>
-					<td id="c-vis-cell-{{ chapter.num }}"><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				{% for module in modules %}
@@ -92,12 +92,12 @@ This is CS50 AP
 					<td>
 						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
 					</td>
-					<td id="c-vis-cell-{{ chapter.num }}"><b>{% if vis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
 					<td><b>Chapter {{ chapter.num }} : {{ chapter.name }}</b></td>
 				</tr>
 				<tr>
 					<td><button onclick="toggleModule({{ mod.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
-					<td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}"><b>{% if mvis == True %}Yes{% else %}No{% endif %}</b></td>
+					<td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}">{% if mvis == True %}Yes{% else %}No{% endif %}</td>
 					<td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
 				</tr>
 			</tbody>
