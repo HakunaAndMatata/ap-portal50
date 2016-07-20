@@ -27,9 +27,9 @@ This is CS50 AP
         {% if not c_selected %}
 	    <a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
 	    {% elif not m_selected %}
-	    <a href="{% url 'curriculum:chapter_customize' chapter.num %}" class="btn btn-default" style="float:right;">Customize</a>
+	    <a href="{% url 'curriculum:chapter_customize' chapter.view_num %}" class="btn btn-default" style="float:right;">Customize</a>
 	    {% else %}
-	    <a href="{% url 'curriculum:module_customize' chapter.num mod.slug %}" class="btn btn-default" style="float:right;">Customize</a>
+	    <a href="{% url 'curriculum:module_customize' chapter.view_num mod.slug %}" class="btn btn-default" style="float:right;">Customize</a>
 	    {% endif %}
 	{% endif %}
 </p>
@@ -43,9 +43,9 @@ This is CS50 AP
 			<option disabled selected value=-1>Choose a Chapter</option>
 			{% for c in chapters %}
 				{% if c.num == chapter.num %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.num %}{% endif %} selected>{{ c.num}} : {{ c.name }}</option>
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %} selected>{{ c.view_num }} : {{ c.name }}</option>
 				{% else %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.num %}{% endif %}>{{ c.num}} : {{ c.name }}</option>
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %}>{{ c.view_num }} : {{ c.name }}</option>
 				{% endif %}
 			{% endfor %}
 		</select>
@@ -56,16 +56,16 @@ This is CS50 AP
 			<option disabled selected value=-1>Choose a Module</option>
 			{% for m in modules %}
 				{% if m.id == mod.id %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.num m.slug %}{% endif %} selected>{{ m.num}} : {{ m.name }}</option>
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %} selected>{{ m.num}} : {{ m.name }}</option>
 				{% else %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.num m.slug %}{% endif %}>{{ m.num}} : {{ m.name }}</option>
+				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %}>{{ m.num}} : {{ m.name }}</option>
 				{% endif %}
 			{% endfor %}
 		</select>
 	</div>
 </div>
 
-{% if c_selected and not m_selected and username = None and chapter.description != "" %}
+{% if c_selected and not m_selected and username == None and chapter.description != "" %}
 <br />
  <div class="card card-default">
     <div class="card-header">

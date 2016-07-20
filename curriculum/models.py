@@ -38,7 +38,7 @@ class Chapter(models.Model):
 	duration = models.CharField(max_length=512,default="",blank=True)
 	description = models.TextField(default="",blank=True)
 	def __unicode__(self):
-		return str(self.num) + ': ' + self.name
+		return str(toViewChapter(self.num)) + ': ' + self.name
 
 class Module(models.Model):
 	num = models.IntegerField(verbose_name="module number")
@@ -48,7 +48,7 @@ class Module(models.Model):
 	duration = models.CharField(max_length=512,default="",blank=True)
 	description = models.TextField(default="",blank=True)
 	def __unicode__(self):
-		return str(self.chapter.num) + '-' + str(self.num) + ': ' + self.name
+		return str(toViewChapter(self.chapter.num)) + '-' + str(self.num) + ': ' + self.name
 
 class ResourceType(models.Model):
 	name = models.CharField(max_length=512)
@@ -115,3 +115,5 @@ class ResourceVisibility(models.Model):
 	class Meta:
 		verbose_name_plural = "resource visibilities"
 
+def toViewChapter(num):
+    return num if num < 5 else (num - 2 if num > 6 else 'A' if num == 5 else 'B')

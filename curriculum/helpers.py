@@ -240,3 +240,15 @@ def remove_resource_and_vis(id):
     resource = Resource.objects.get(pk=id)
     ResourceVisibility.objects.filter(resource=resource).delete()
     resource.delete()
+
+def toViewChapter(num):
+    return num if num < 5 else (num - 2 if num > 6 else 'A' if num == 5 else 'B')
+
+def fromViewChapter(num):
+    try:
+        val = int(num)
+        # it's a number
+        return val if val < 5 else val + 2
+    except ValueError:
+        return 5 if (num == "A" or num == "a") else 6
+        

@@ -95,12 +95,17 @@ def custom(request, arg, chapter_num, module_slug):
             toggle_module_visibility(request.user, data.get('m_vis'), data.get('c_select'))
         elif 'r_vis' in data:
             toggle_resource_visibility(request.user, data.get('r_vis'))
-    chapters = Chapter.objects.all()
+    old_chapters = Chapter.objects.all()
+    chapters = []
+    for c in old_chapters:
+        c.view_num = toViewChapter(c.num)
+        chapters.append(c)
     modules = []
     # user clicked on a chapter or module in the customize view, generate nav data
     if (chapter_num != None):
         # get chapter and visibility status
         chapter = chapter_by_num(chapter_num)
+        chapter.view_num = toViewChapter(chapter.num)
         if (chapter == None):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'Your requested chapter is unavailable.'})
         vis = chapter_visibility(request.user,chapter_num).visible
@@ -161,10 +166,12 @@ def customize(request):
 
 # called from choosing a chapter on the customize page
 def chapter_customize(request, chapter):
+    chapter = fromViewChapter(chapter)
     return custom(request,"chapter",chapter,None)
 
 # called from choosing a module on the customize page
 def module_customize(request, chapter, slug):
+    chapter = fromViewChapter(chapter)
     return custom(request,"module",chapter,slug)
 
 def curriculum(request, username, chapter, module_slug):
@@ -175,7 +182,11 @@ def curriculum(request, username, chapter, module_slug):
         user = User.objects.filter(username=username)
         if (len(user) != 1):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The user whose curriculum you attempted to view does not exist.'})
-    chapters = Chapter.objects.all() if username == None else visible_chapters(user_by_username(username))
+    old_chapters = Chapter.objects.all() if username == None else visible_chapters(user_by_username(username))
+    chapters = []
+    for c in old_chapters:
+        c.view_num = c.view_num = toViewChapter(c.num)
+        chapters.append(c)
     # setting initial variables to be passed in
     modules = []
     resources = []
@@ -194,6 +205,7 @@ def curriculum(request, username, chapter, module_slug):
     c_selected = (chapter != None)
     if (c_selected):
         chapter = chapter_by_num(chapter)
+        chapter.view_num = toViewChapter(chapter.num)
         if (chapter == None):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'Your requested chapter is unavailable.'})
         if (username != None) and (not chapter_visibility(user_by_username(username),chapter.num).visible):
@@ -220,9 +232,11 @@ def teacher_page(request, username):
     return curriculum(request,username,None,None)
 
 def teacher_page_chapter(request, username, chapter):
+    chapter = fromViewChapter(chapter)
     return curriculum(request,username,chapter,None)
 
 def teacher_page_module(request, username, chapter, slug):
+    chapter = fromViewChapter(chapter)
     return curriculum(request, username, chapter, slug)
 
 # standard curriculum page, landing page
@@ -230,9 +244,11 @@ def curriculum_page(request):
     return curriculum(request,None,None,None)
 
 def curriculum_page_chapter(request,chapter):
+    chapter = fromViewChapter(chapter)
     return curriculum(request,None,chapter,None)
 
 def curriculum_page_module(request,chapter,slug):
+    chapter = fromViewChapter(chapter)
     return curriculum(request,None,chapter,slug)
 
 # view to display all resources in searchable format by type
@@ -253,12 +269,10 @@ def settings(request):
     textcolor = request.user.userprofile.textcolor
     location = request.user.userprofile.location
     logo = request.user.userprofile.logo
-    print(logo)
     return render(request, 'curriculum/settings.html', {'user':request.user, 'bgcolor':bgcolor, 'headercolor':headercolor, 'sidecolor':sidecolor, 'textcolor':textcolor, 'location':location, 'logo':logo})
 
 # displays the site's individual pages
 def show_page(request, pagename):
-    print pagename
     page = Page.objects.filter(slug=pagename)
     if (len(page) == 0):
         return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The page you requested does not exist.'})
