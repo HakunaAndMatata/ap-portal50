@@ -211,7 +211,7 @@ def curriculum(request, username, chapter, module_slug):
         if (username != None) and (not chapter_visibility(user_by_username(username),chapter.num).visible):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'Your requested chapter is set to be not visible.'})
         modules = Module.objects.filter(chapter=chapter) if username == None else visible_modules(user_by_username(username),chapter)
-        overview_url = static("curriculum/chapter-overviews/" + str(chapter.num) + ".pdf")
+        overview_url = static("curriculum/chapter-overviews/" + str(chapter.view_num) + ".pdf")
     m_selected = (module_slug != None)
     if (m_selected):
         mod = module_by_slug(module_slug,chapter.num)

@@ -100,9 +100,6 @@ This is CS50 AP
 <div class="panel panel-default">
   <div class="panel-heading"><b>Overview</b>: {{ mod.name }}</div>
   <div class="panel-body">{{ mod.description }}</div>
-  {% if username == None and mod.duration != "" %}
-  <div class="panel-footer footer-text">This module should take approximately {{ mod.duration }} to complete, of a chapter that lasts {{ chapter.duration }}</div>
-  {% endif %}
 </div>
 </div>
 </div>

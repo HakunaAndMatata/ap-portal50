@@ -11,6 +11,12 @@
   * username = davey
   * password = davey
 
+## Dependencies
+
+(incomplete list)
+
+* mysql-python
+
 ## Features
 
 Settings 

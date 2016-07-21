@@ -3,6 +3,7 @@ from django.contrib.admin import AdminSite
 from django.utils.translation import ugettext_lazy
 from curriculum.models import *
 from django.contrib.auth.models import User, Group
+from curriculum.helpers import *
 # Register your models here.
 
 
@@ -40,12 +41,14 @@ class UserAdmin(admin.ModelAdmin):
 	list_filter= ['userprofile__approved', 'is_staff']
 
 class ChapterAdmin(admin.ModelAdmin):
-	# module editor appears inside the chapter editor
-	inlines = [ModuleInline]
-	list_display = ('name', 'num', 'module_count')
-	def module_count(self, x):
-		return len(Module.objects.filter(chapter=x))
-	ordering = ['num']
+    # module editor appears inside the chapter editor
+    inlines = [ModuleInline]
+    list_display = ('name', 'num', 'viewed_as', 'module_count')
+    def module_count(self, x):
+        return len(Module.objects.filter(chapter=x))
+    ordering = ['num']
+    def viewed_as(self, x):
+        return toViewChapter(x.num)
 
 class ModuleAdmin(admin.ModelAdmin):
 	inlines = [ResourceInline]

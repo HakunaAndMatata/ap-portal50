@@ -21,13 +21,13 @@ class UserProfile(models.Model):
     )
     acct_type = models.CharField(max_length=3, choices=ACCT_TYPE_CHOICES, default=TEACHER)
     approved = models.BooleanField(default=False)
-    location = models.CharField(max_length=300, default="")
-    logo = models.CharField(max_length=300, default="")
+    location = models.CharField(max_length=300, default="",blank=True)
+    logo = models.CharField(max_length=300, default="",blank=True)
     bgcolor = models.CharField(max_length=7, default="F0F3F6")
     headercolor = models.CharField(max_length=7, default="D7DDE4")
     sidecolor = models.CharField(max_length=7, default="3A4651")
     textcolor = models.CharField(max_length=7, default="4F5F6F")
-    bio = models.TextField(default="")
+    bio = models.TextField(default="",blank=True)
     profile_public = models.BooleanField(default=False)
     def __unicode__(self):
         return self.user.username
@@ -45,7 +45,6 @@ class Module(models.Model):
 	chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
 	name = models.CharField(max_length=512,default="")
 	slug = models.SlugField(default="",blank=True)
-	duration = models.CharField(max_length=512,default="",blank=True)
 	description = models.TextField(default="",blank=True)
 	def __unicode__(self):
 		return str(toViewChapter(self.chapter.num)) + '-' + str(self.num) + ': ' + self.name
@@ -114,6 +113,3 @@ class ResourceVisibility(models.Model):
 		return str(self.user) + "." + str(self.resource)
 	class Meta:
 		verbose_name_plural = "resource visibilities"
-
-def toViewChapter(num):
-    return num if num < 5 else (num - 2 if num > 6 else 'A' if num == 5 else 'B')
