@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -113,3 +112,7 @@ class ResourceVisibility(models.Model):
 		return str(self.user) + "." + str(self.resource)
 	class Meta:
 		verbose_name_plural = "resource visibilities"
+
+        
+def toViewChapter(num):
+    return num if num < 5 else (num - 2 if num > 6 else 'A' if num == 5 else 'B')
