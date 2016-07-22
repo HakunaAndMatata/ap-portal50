@@ -122,7 +122,19 @@ This documentation goes into more depth on how each URL mapping works when discu
 
 === index(request)
 
-`index(request)` is the 
+`index()` handles the request when the user accesses the `/` URL. `index()` first checks to make sure that the user is logged in. If the user isn't logged in, they are redirected to the homepage. I the user is logged in, but their account is not approved (as defined by `approved` in the user's `UserProfile`), then the user is taken to a page that says that the account is inactive. Otherwise, the logged-in user is also taken the the homepage.
+
+=== logout_view(request)
+
+`logout_view()` handles the request when the user chooses to Log Out. The function logs the user out, if they're logged in at all, and then redirects to the homepage.
+
+=== login_view(request)
+
+`login_view()` handles the request when the user goes to the login page, and when the user submits a login form. If the user is already logged in, the function redirects the user to `index()`. Otherwise, if the login page is requested via `GET`, then the login page is rendered. If a `POST` request is submitted, then the site tries to authenticate the user. If the user is not successfully authenticated, the login view is rendered again with an error message. If the user is authenticated, then `login_prep()` is first called, which generates any visibility files and module information supplement files that the user doesn't already have (such as from new modules or resources that have been added since the last time that the user logged in). The user is then logged in, and then `index()` is called to go to the homepage.
+
+=== register(request)
+
+`register()` handles user registration. If a user tries to access `/register/` when the user is already logged in, they are redirected to the index page. 
 
 == helpers.py
 

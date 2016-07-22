@@ -719,7 +719,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_index_request">index(request)</h3>
 <div class="paragraph">
-<p><code>index(request)</code> is the</p>
+<p><code>index()</code> handles the request when the user accesses the <code>/</code> URL. <code>index()</code> first checks to make sure that the user is logged in. If the user isn&#8217;t logged in, they are redirected to the homepage. I the user is logged in, but their account is not approved (as defined by <code>approved</code> in the user&#8217;s <code>UserProfile</code>), then the user is taken to a page that says that the account is inactive. Otherwise, the logged-in user is also taken the the homepage.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logout_view_request">logout_view(request)</h3>
+<div class="paragraph">
+<p><code>logout_view()</code> handles the request when the user chooses to Log Out. The function logs the user out, if they&#8217;re logged in at all, and then redirects to the homepage.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_login_view_request">login_view(request)</h3>
+<div class="paragraph">
+<p><code>login_view()</code> handles the request when the user goes to the login page, and when the user submits a login form. If the user is already logged in, the function redirects the user to <code>index()</code>. Otherwise, if the login page is requested via <code>GET</code>, then the login page is rendered. If a <code>POST</code> request is submitted, then the site tries to authenticate the user. If the user is not successfully authenticated, the login view is rendered again with an error message. If the user is authenticated, then <code>login_prep()</code> is first called, which generates any visibility files and module information supplement files that the user doesn&#8217;t already have (such as from new modules or resources that have been added since the last time that the user logged in). The user is then logged in, and then <code>index()</code> is called to go to the homepage.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_register_request">register(request)</h3>
+<div class="paragraph">
+<p><code>register()</code></p>
 </div>
 </div>
 </div>
@@ -739,7 +757,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-07-22 13:57:45 EDT
+Last updated 2016-07-22 14:52:50 EDT
 </div>
 </div>
 </body>
