@@ -7,7 +7,7 @@ This is CS50 AP
 
 <!-- Custom Logo on Sidebar -->
 {% block sidebar-header %}
-	{% if username != None and logo != None %}
+	{% if username != None and logo != None and logo != ""%}
 		<img src={{ logo }} width="100%">
 	{% else %}
 	    {{block.super}}
