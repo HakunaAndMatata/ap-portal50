@@ -58,9 +58,9 @@ class ResourceType(models.Model):
 class Resource(models.Model):
     rtype = models.ForeignKey(ResourceType, on_delete=models.PROTECT, verbose_name="resource type")
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    name = models.CharField(max_length=512,default="")
-    content = models.CharField(max_length=512,default="",blank=True, verbose_name="description")
-    link = models.CharField(max_length=512,default="",blank=True)
+    name = models.CharField(max_length=2048,default="")
+    content = models.CharField(max_length=2048,default="",blank=True, verbose_name="description")
+    link = models.CharField(max_length=2048,default="",blank=True)
     private = models.BooleanField(default=False)
     author = models.ForeignKey(User, null=True, blank=True, default=None, on_delete=models.CASCADE) # the 'None' author refers to CS50 resources
     shared = models.BooleanField(default=False) # 'shared' applies to teacher resources, determines whether they are viewable by other teachers

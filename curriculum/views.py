@@ -130,7 +130,7 @@ def custom(request, arg, chapter_num, module_slug):
         mvis = module_visibility(request.user,module.num,chapter_num).visible
         if (mvis == None):
             return render(request, 'curriculum/error.html', {'user':request.user, 'error':'There was an error accessing visibility settings.'})
-        # get resources in chapter, and get visibility statuses for each
+        # get resources in module, and get visibility statuses for each
         resources = all_resources_nocat(module)
         fullResources = []
         for resource in resources:
@@ -277,6 +277,9 @@ def show_page(request, pagename):
     if (len(page) == 0):
         return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The page you requested does not exist.'})
     page = page[0]
+    if (page.private == True):
+        if not request.user.is_authenticated() or not request.user.userprofile.approved:
+            return render(request, 'curriculum/error.html', {'user':request.user, 'error':'You are not authorized to view this page..'})
     return render(request, 'curriculum/page.html', {'user':request.user, 'name':page.name, 'contents':page.contents})
 
 # public profile page for teachers
@@ -286,4 +289,6 @@ def profile(request, username):
         return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The user you requested does not exist.'})
     user = user[0]
     profile = user.userprofile
+    if (profile.profile_public == False):
+        return render(request, 'curriculum/error.html', {'user':request.user, 'error':'The user you requested has a profile that is set to private.'})
     return render(request, 'curriculum/profile.html', {'user':request.user, 'target':user, 'target_profile':profile})

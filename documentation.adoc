@@ -1,0 +1,129 @@
+= CS 50 AP Portal Documentation
+by Brian Yu - Updated July 22, 2016
+
+== Necessary Dependencies
+* Python - AP Portal was developed on Python v2.7.11, but it should be compatible with other versions as well.
+* Django - AP Portal was developed on Django v1.9.7
+* MySQL - AP Portal was developed on MySQL v5.7.13
+
+== Models
+
+All models for the structure of the database are located in `models.py` in the `curriculum` directory.
+
+=== UserProfile
+The `UserProfile` class describes the attributes of each user beyond just the basic information (like first name, last name, username, password) included in Django's standard `User` class. Upon each user's registration, they will have a `User` object created, as well as a `UserProfile` which is linked to the `User`.
+
+Each `UserProfile` has the following attributes:
+
+* `user` is a `OneToOneField` that relates each `UserProfile` to its corresponding `User`. Because this is a `OneToOneField`, each `User` must have one and only one `UserProfile`.
+* `school` is a `CharField` that represents the user's school.
+* `school_proof` is a `CharField` that's used to store the "Proof of Status" that teachers must submit in order to register on the website. When teachers register via the site's registration page, `school_proof` is set to the proof of status that they submit (we expect this to be a link to a school district website or something similar). This information will only ever appear to site administrators who use CS50 AP Admin in order to approve users.
+* `approved` is a `BooleanField` which indicates whether or not CS50 AP has approved the user's account. When teachers register on the CS50 AP site, the `approved` field defaults to being `False`.
+* `location` is a `CharField` that the user can modify in their Settings page to set the location that they are teaching. On each teacher's personal curriculum landing page, if they have a location set, the top of their page will say "This is CS50 [Location]", where [Location] is whatever the user entered into their `location` field.
+* `logo` is a `CharField` which acts as a link to an image elsewhere on the internet. If the `logo` field is set, then the teacher's curriculum page will display the logo image in the upper left corner of the window.
+* `bgcolor`, `headercolor`, `sidecolor`, and `textcolor` are all `CharField`pass:[s] that represent a six-character hexadecimal color. They allow the user to customize their curriculum page's background, header, sidebar, and text color. These fields can be modified in the user's settings page. By default, they are set to the same colors that the CS50 AP portal uses generally.
+* `bio` is a `TextField` that is meant to allow teachers to provide additional information about themselves that other teachers would be able to see. Currently, the contents of this field appear on the teacher's Profile page.
+* `profile_public` is a `BooleanField` that indicates whether or not the teacher's Profile page (which includes their bio and contact information) is visible to the public.
+
+The string representation of a `UserProfile` is just the user's `username`.
+
+=== Chapter
+The `Chapter` class represents each Chapter/Unit in the CS50 AP curriculum.
+
+* `num` is a `IntegerField` which refers to the chapter's number. This number refers only to how the chapter is stored in the database, and determines the order that chapters will appear on curriculum pages. However, the number that each chapter is given in the database may differ from the way that the chapter appears to the user. As of July 2016, Chapters 5 and 6 appear to viewers as Chapters A and B, and Chapters 7 and 8 appear to viewers as Chapters 5 and 6.
+* `name` is a `CharField` which refers to the chapter's name.
+* `duration` is a `CharField` which refers to how long the chapter should take to complete.
+* `description` is a `TextField` which contains each chapter's Chapter Overview. This field, which will render as HTML, appears on individual Chapter pages on the curriculum site. The Chapter Overview should contain general information about the contents of the chapter, the problems, learning objectives fulfilled, etc.
+
+The string representation of a `Chapter` is the chapter's viewed number (not the `num`, but rather how the chapter number appears to users) followed by a colon, followed by the name of the chapter. The chapter's viewed number is calculated via the `toViewChapter` function.
+
+=== Module
+The `Module` class represents each Module in the CS50 AP curriculum.
+
+* `num` is an `IntegerField` which refers to the module's number. This determines the order in which modules appear on curriculum pages. Unlike chapters, which are mapped to a separate `view_num` before being displayed, module numbers display with the same number that they are represented with in the database.
+* `chapter` is a `ForeignKey` which assigns each `Module` a corresponding `Chapter` that it belongs to. A `Module` can be assigned only one `Chapter`, though multiple `Module`pass:[s] can be assigned to a single `Chapter`. The field has an `on_delete` parameter which is set to `CASCADE`, which means that the removal of a `Chapter` will automatically remove any corresponding `Module`pass:[s].
+* `name` is a `CharField` which refers to the module's name.
+* `slug` is a `SlugField` which refers to the module's slug- which is how it is represented in a URL. The `slug` should be all lowercase, and may not contain spaces or slashes: use hyphens to separate words if necessary.
+* `description` is a `TextField` which refers to the Module Overview. It will appear at the top of all module pages.
+
+The string representation of a `Module` is the corresponding chapter's viewed number, followed by a hyphen, followed by the chapter number, followed by a colon, followed by the name of the module.
+
+=== ResourceType
+The `ResourceType` class represents the various types of resources that are offered in the CS50 AP curriculum.
+
+* `name` is a `CharField` which refers to the name of the resource type (e.g. "Videos" or "Slides").
+* `column` is an `IntegerField` which refers to which column the resource type should appear in on the module page. Each module page is two columns, where the left column is represented by the number `0`, and the right column represented by the number `1`. Resources that fall into types that have a `column` value of `0` will appear on the left side of module pages, whereas resources that fall into types that have a `column` value of `1` will appear on the right side of module pages.
+* `row` is an `IntegerField` which refers to which row the resource type should appear in on the module page. This determines the layout of columns on each module page. Each `ResourceType` object should have a unique `row` within its given `column` in order to ensure that the page lays out correctly.
+
+The string representation of a `ResourceType` is just the name of the resource type.
+
+=== Resource
+The `Resource` class represents each Resource in the CS50 AP curriculum.
+
+* `rtype` is a `ForeignKey` which assigns each `Resource` a `ResourceType`. This is how resources are categorized, and the information stored in `ResourceType` about its `column` and `row` determine where on the page each resource will appear on module pages.
+* `module` is a `ForeignKey` which relates each `Resource` to a `Module`. The `on_delete` parameter is set to `CASCADE`, such that the deletion of any `Module` will automatically delete all corresponding `Resource`pass:[s].
+* `name` is a `CharField` which refers to the name or title of the resource. For some resources (e.g. Thought Questions) the name might be the entire question itself. This is a required field.
+* `content` is a `CharField` which refers to the contents of the resource. This is used to provide additional information about a resource. This field is optional.
+* `link` is a `CharField` which is a link to a resource if it's found on some other website (e.g. a YouTube video, or a problem that links to the CS50 CDN). This field is optional. If you fill it, it should include `http://` or `https://` at the beginning of the URL.
+* `private` is a `BooleanField` that signals whether the resource should be made private to teachers. If a field is `private`, it is not accessible to students.
+* `author` is a `ForeignKey` which relates each `Resource` to the user which created it. This is a field meant for teacher-generated resources. For resources provided by CS50, the `author` should be `None`. The `on_delete` field is set to `CASCADE`, which is to say that if a user were to ever be deleted, any `Resource` that the user created would also be deleted.
+* `shared` is a `BooleanField` which determines if a user-created `Resource` is shared with other teachers. For resources provided by CS50 (i.e. resources whose `author` is `None`), the contents of the `shared` field is irrelevant. If `shared` is `True` on a teacher-provided resource, then other teachers will be able to see and access the resource.
+
+The string representation of a `Resource` is the name of the resource.
+
+=== Page
+The `Page` class represents a static page in the CS50 AP curriculum. It can be used for providing resources and information that doesn't fit into the standard Chapter-Module-Resource model.
+
+* `name` is a `CharField` which refers to the name of the page.
+* `contents` is a `TextField` which represents the contents of the page. This field can include HTML tags.
+* `slug` is a `SlugField` which refers to the page's slug— which is how it is represented in a URL. The slug should be all lowercase, and must not contain spaces or slashes. Use hyphens to separate words.
+* `private` is a `BooleanField` indicating whether the page should be visible to non-authorized users or not. If `private` is true, then the page will only be able to be accessed by authorized teachers.
+
+The string representation of a `Page` is the name of the page.
+
+=== Supplement
+The `Supplement` class is meant for additional information about a module that a teacher wishes to provide to students. As of July 2016, the only use of the `Supplement` class is for teachers to provide a Teacher's Note at the top of each module page. However, the `Supplement` class was designed to be open to the possibility that new types of supplementary module resources may exist in the future that teachers wish to add.
+
+* `user` is a `ForeignKey` which maps each `Supplement` to the `User` which created it. The `on_delete` attribute is set to `CASCADE`, such that when a user's account is deleted, any supplementary information they have saved in `Supplement` classes is also deleted.
+* `module` is a `ForeignKey` which maps each `Supplement` to the `Module` that it corresponds to. For Teacher's Notes, this means that each note is assigned to a specific module. This relationship also is set to `CASCADE` on deletion, so the removal of a module removes any Supplementary materials that are associated with the module.
+* `identifier` is an `IntegerField` which denotes which type of supplement is being stored. As of July 2016, the only identifier that is used is identifier `0`, which represents a Teacher's Note associated with each supplement. Should new types of supplementary resources be required later, this identifier can be incremented.
+* `contents` is a `TextField` which represents the contents of the supplement.
+
+The string representation of a `Supplement` is the author's username, followed by a space, followed by the slug of the relevant module.
+
+=== ChapterVisibility
+All of the `Visibility` classes are used to store information regarding whether or not particular chapters, modules, and resources are visible to students on a particular teacher's curriculum page. The `ChapterVisibility` class represents whether or not a particular chapter is visible on a given teacher's curriculum page.
+
+* `user` is a `ForeignKey` that references the `User` who is setting the `Chapter` to be either visible or not visible to students.
+* `chapter` is a `ForeignKey` that references the `Chapter` that is being toggled to be either visible or not visible.
+* `visible` is a `BooleanField` that is `True` if the `Chapter` is visible to students on the teacher's curriculum page, and `False` if the `Chapter` is not set to be visible.
+
+The string representation of a `ChapterVisibility` is the teacher's username followed by a `.` followed by the representation of the `Chapter`.
+
+=== ModuleVisibility
+The `ModuleVisibility` class denotes which modules are visible or not visible on particular teachers' curriculum pages. The logic is the same as for the `ChapterVisibility` class, and all of the fields are idential (with all references to `Chapter` replaced by references to `Module`).
+
+=== ResourceVisibility
+The `ResourceVisibility` class denotes which resources are visible or not visible on particular teachers' curriculum pages. The logic is the same as for the `ChapterVisibility` class, and all of the fields are idential (with all references to `Chapter` replaced by references to `Resource`).
+
+== Site URLs
+
+There are two URL files in Portal which map URLs to particular functions that are used to render views. `ap50/urls.py` handles determining whether to render the main curriculum site or the admin site. The first URL pattern, which maps to the URL `admin/`, indicates that the CS50 AP Admin page should load. The second URL pattern, which maps to all other URLs, takes the user to the regular CS50 AP portal website.
+
+All of the URL mappings for the main site are located in `curriculum/urls.py`. The `urlpatterns` array contains an array of URLs, each of which contains a regular expression for how to access it, the function for which controller code is responsible for processing the request, and a unique name assigned to each URL pattern (used for linking to other pages).
+
+This documentation goes into more depth on how each URL mapping works when discussing the template pages that they ultimately load.
+
+== Code Organization Overview
+
+`views.py` is where most of the logic for the pages takes place, with several of the functions in `helpers.py` being called to perform functions that interact with the database in some way. Ultimately, the functions in `views.py` renders a template located in the `templates/curriculum` directory.
+
+== views.py
+
+=== index(request)
+
+`index(request)` is the 
+
+== helpers.py
+
+== templates

@@ -30,7 +30,6 @@ urlpatterns = [
     url(r'^ajax/update-settings/$', ajax.update_settings, name='update_settings'),
     url(r'^ajax/add-resource/$', ajax.add_resource, name='add_resource'),
     url(r'^ajax/remove-resource/$', ajax.remove_resource, name='remove_resource'),
-    # calls ajax.py (so do the rest, but this is Annie needing to give herself more hints)
     url(r'^ajax/access-resource/$', ajax.access_resource, name='access_resource'),
     url(r'^ajax/edit-resource/$', ajax.edit_resource, name='edit_resource'),
 
