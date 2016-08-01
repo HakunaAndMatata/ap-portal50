@@ -7,62 +7,62 @@ This is CS50 AP
 
 <!-- Custom Logo on Sidebar -->
 {% block sidebar-header %}
-	{% if username != None and logo != None and logo != ""%}
-		<img src={{ logo }} width="100%">
-	{% else %}
-	    {{block.super}}
-	{% endif %}
+    {% if username != None and logo != None and logo != ""%}
+        <img src={{ logo }} width="100%">
+    {% else %}
+        {{block.super}}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
 <p class="headline"> 
-   	{% if username  == None %}
-   		CS50 AP Curriculum
-   	{% elif location == None or location == "" %}
-   		CS50 AP Curriculum: {{ username }}
-   	{% else %}
-   		This is CS50 {{ location }}.
-   	{% endif %}
-	{% if username != None and username == user.username %}
+       {% if username  == None %}
+           CS50 AP Curriculum
+       {% elif location == None or location == "" %}
+           CS50 AP Curriculum: {{ username }}
+       {% else %}
+           This is CS50 {{ location }}.
+       {% endif %}
+    {% if username != None and username == user.username %}
         {% if not c_selected %}
-	    <a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
-	    {% elif not m_selected %}
-	    <a href="{% url 'curriculum:chapter_customize' chapter.view_num %}" class="btn btn-default" style="float:right;">Customize</a>
-	    {% else %}
-	    <a href="{% url 'curriculum:module_customize' chapter.view_num mod.slug %}" class="btn btn-default" style="float:right;">Customize</a>
-	    {% endif %}
-	{% endif %}
+        <a href="{% url 'curriculum:customize' %}" class="btn btn-default" style="float:right;">Customize</a>
+        {% elif not m_selected %}
+        <a href="{% url 'curriculum:chapter_customize' chapter.view_num %}" class="btn btn-default" style="float:right;">Customize</a>
+        {% else %}
+        <a href="{% url 'curriculum:module_customize' chapter.view_num mod.slug %}" class="btn btn-default" style="float:right;">Customize</a>
+        {% endif %}
+    {% endif %}
 </p>
 
 <br />
 
 <div class="row">
-	<div class="col-md-6">
-		<h3>Chapter:</h3>
-		<select class="form-control" onchange="location = this.value;">
-			<option disabled selected value=-1>Choose a Chapter</option>
-			{% for c in chapters %}
-				{% if c.num == chapter.num %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %} selected>{{ c.view_num }} : {{ c.name }}</option>
-				{% else %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %}>{{ c.view_num }} : {{ c.name }}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
-	</div>
-	<div class="col-md-6">
-		<h3>Module:</h3>
-		<select class="form-control" onchange="location = this.value;">
-			<option disabled selected value=-1>Choose a Module</option>
-			{% for m in modules %}
-				{% if m.id == mod.id %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %} selected>{{ m.num}} : {{ m.name }}</option>
-				{% else %}
-				<option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %}>{{ m.num}} : {{ m.name }}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
-	</div>
+    <div class="col-md-6">
+        <h3>Chapter:</h3>
+        <select class="form-control" onchange="location = this.value;">
+            <option disabled selected value=-1>Choose a Chapter</option>
+            {% for c in chapters %}
+                {% if c.num == chapter.num %}
+                <option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %} selected>{{ c.view_num }} : {{ c.name }}</option>
+                {% else %}
+                <option value={% if username != None %}{% url 'curriculum:teacher_page_chapter' username c.view_num %}{% else %}{% url 'curriculum:curriculum_page_chapter' c.view_num %}{% endif %}>{{ c.view_num }} : {{ c.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <h3>Module:</h3>
+        <select class="form-control" onchange="location = this.value;">
+            <option disabled selected value=-1>Choose a Module</option>
+            {% for m in modules %}
+                {% if m.id == mod.id %}
+                <option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %} selected>{{ m.num}} : {{ m.name }}</option>
+                {% else %}
+                <option value={% if username != None %}{% url 'curriculum:teacher_page_module' username chapter.view_num m.slug %}{% else %}{% url 'curriculum:curriculum_page_module' chapter.view_num m.slug %}{% endif %}>{{ m.num}} : {{ m.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
 </div>
 
 {% if c_selected and not m_selected and username == None and chapter.description != "" %}
@@ -82,8 +82,8 @@ This is CS50 AP
 
 
 {% if m_selected %}
-	<br />
-	
+    <br />
+    
 {% if username != None and modinfo != None and modinfo.contents != "" %}
 <div class="row">
 <div class="col-sm-12">
@@ -107,26 +107,26 @@ This is CS50 AP
 
 <div class="row">
 {% for column in collection %}
-	<div class="col-md-6">
-	{% for row in column %}
-	<div class="panel panel-default">
-	<div class="panel-heading"><b>{{ row.name }}</b></div>
-	<div class="panel-body">
-		{% for resource in row.resources %}
-			{% if resource.link != "" %}
-				<b><a href="{{ resource.link }}" target="_blank">{{ resource.name }}</a></b>
-			{% else %}
-				<b>{{ resource.name }}</b>
-			{% endif %}
-			{% if resource.content != "" %}
-				: {{ resource.content }}
-			{% endif %}
-			<br /><br />
-		{% endfor %}
-	</div>
-	</div>
-	{% endfor %}
-	</div>
+    <div class="col-md-6">
+    {% for row in column %}
+    <div class="panel panel-default">
+    <div class="panel-heading"><b>{{ row.name }}</b></div>
+    <div class="panel-body">
+        {% for resource in row.resources %}
+            {% if resource.link != "" %}
+                <b><a href="{{ resource.link }}" target="_blank">{{ resource.name }}</a></b>
+            {% else %}
+                <b>{{ resource.name }}</b>
+            {% endif %}
+            {% if resource.content != "" %}
+                : {{ resource.content }}
+            {% endif %}
+            <br /><br />
+        {% endfor %}
+    </div>
+    </div>
+    {% endfor %}
+    </div>
 {% endfor %}
 </div>
 

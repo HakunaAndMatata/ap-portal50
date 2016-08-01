@@ -18,96 +18,96 @@ This is CS50 AP
 
 
 <div class="row">
-	<div class="col-md-6">
-		<select class="form-control" onchange="location = this.value;">
-			<option disabled selected value=-1>Choose a Chapter</option>
-			{% for c in chapters %}
-				{% if c.num == chapter.num %}
-				<option value={% url 'curriculum:chapter_customize' c.view_num %} selected>{{ c.view_num }} : {{ c.name }}</option>
-				{% else %}
-				<option value={% url 'curriculum:chapter_customize' c.view_num %}>{{ c.view_num }} : {{ c.name }}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
-	</div>
-	<div class="col-md-6">
-		<select class="form-control" onchange="location = this.value;">
-			<option disabled selected value=-1>Choose a Module</option>
-			{% for m in modules %}
-				{% if m.id == mod.id %}
-				<option value={% url 'curriculum:module_customize' chapter.view_num m.slug %} selected>{{ m.num}} : {{ m.name }}</option>
-				{% else %}
-				<option value={% url 'curriculum:module_customize' chapter.view_num m.slug %}>{{ m.num}} : {{ m.name }}</option>
-				{% endif %}
-			{% endfor %}
-		</select>
-	</div>
+    <div class="col-md-6">
+        <select class="form-control" onchange="location = this.value;">
+            <option disabled selected value=-1>Choose a Chapter</option>
+            {% for c in chapters %}
+                {% if c.num == chapter.num %}
+                <option value={% url 'curriculum:chapter_customize' c.view_num %} selected>{{ c.view_num }} : {{ c.name }}</option>
+                {% else %}
+                <option value={% url 'curriculum:chapter_customize' c.view_num %}>{{ c.view_num }} : {{ c.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <select class="form-control" onchange="location = this.value;">
+            <option disabled selected value=-1>Choose a Module</option>
+            {% for m in modules %}
+                {% if m.id == mod.id %}
+                <option value={% url 'curriculum:module_customize' chapter.view_num m.slug %} selected>{{ m.num}} : {{ m.name }}</option>
+                {% else %}
+                <option value={% url 'curriculum:module_customize' chapter.view_num m.slug %}>{{ m.num}} : {{ m.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
 </div>
 
 <br />
 
 {% if arg == "chapter" %}
-	<div class="dt_wrapper">
-		<table width="100%" class="table table-striped table-bordered table-hover" id="chapter-table">
-			<thead>
-				<tr>
-					<th>Toggle</th>
-					<th>Visible to Students</th>
-					<th>Curriculum</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
-					</td>
-					<td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
-					<td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
-				</tr>
-				{% for module in modules %}
-				<tr>
-					<td><button onclick="toggleModule({{ module.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
-					<td id="m-vis-cell-{{ module.num }}-{{ chapter.num }}">{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
-					<td><a href="{% url 'curriculum:module_customize' chapter.view_num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-	
+    <div class="dt_wrapper">
+        <table width="100%" class="table table-striped table-bordered table-hover" id="chapter-table">
+            <thead>
+                <tr>
+                    <th>Toggle</th>
+                    <th>Visible to Students</th>
+                    <th>Curriculum</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
+                    </td>
+                    <td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
+                    <td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
+                </tr>
+                {% for module in modules %}
+                <tr>
+                    <td><button onclick="toggleModule({{ module.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+                    <td id="m-vis-cell-{{ module.num }}-{{ chapter.num }}">{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
+                    <td><a href="{% url 'curriculum:module_customize' chapter.view_num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 {% endif %}
 
 {% if arg == "module" %}
-	<div class="dt_wrapper">
-		<table width="100%" class="table table-striped table-bordered table-hover" id="module-table">
-			<thead>
-				<tr>
-					<th>Toggle</th>
-					<th>Visible to Students</th>
-					<th>Curriculum</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
-					</td>
-					<td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
-					<td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
-				</tr>
-				<tr>
-					<td><button onclick="toggleModule({{ mod.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
-					<td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}">{% if mvis == True %}Yes{% else %}No{% endif %}</td>
-					<td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<br /><br />
-	<hr>
-	<h3>Custom Module Information Panel</h3>
-	<h6>This information will be displayed to your students on your personal module page.</h6>
-	<div class="card card-default">
+    <div class="dt_wrapper">
+        <table width="100%" class="table table-striped table-bordered table-hover" id="module-table">
+            <thead>
+                <tr>
+                    <th>Toggle</th>
+                    <th>Visible to Students</th>
+                    <th>Curriculum</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
+                    </td>
+                    <td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
+                    <td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
+                </tr>
+                <tr>
+                    <td><button onclick="toggleModule({{ mod.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+                    <td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}">{% if mvis == True %}Yes{% else %}No{% endif %}</td>
+                    <td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br /><br />
+    <hr>
+    <h3>Custom Module Information Panel</h3>
+    <h6>This information will be displayed to your students on your personal module page.</h6>
+    <div class="card card-default">
         <div class="card-block">
             <textarea rows="5" style="width:100%" autofocus id="custom-area">{{ modinfo.contents }}</textarea>
         </div>
@@ -119,95 +119,95 @@ This is CS50 AP
     <h3>Custom Resources</h3>
     <button class="btn btn-primary btn-sm" data-toggle="modal" type="button" data-target="#add-resource-modal">Add Resource</button>
     <div class="dt_wrapper">
-		<table width="100%" class="table table-striped table-bordered table-hover dataTable" id="cresource-table">
-			<thead>
-				<tr>
-					<th>Toggle</th>
-					<th>Visible</th>
-					<th>Resource</th>
-					<th>Resource Type</th>
-					<th>Resource Link</th>
-					<th>Edit</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for resource in cresources %}
-					<tr>
-					<td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
-					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
-					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
-					<td>{{ resource.rtype }}</td>
-					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
-					<td><button onclick="showEditResource( {{resource.id}} )" class="btn btn-xs btn-primary">Edit</button></td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+        <table width="100%" class="table table-striped table-bordered table-hover dataTable" id="cresource-table">
+            <thead>
+                <tr>
+                    <th>Toggle</th>
+                    <th>Visible</th>
+                    <th>Resource</th>
+                    <th>Resource Type</th>
+                    <th>Resource Link</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in cresources %}
+                    <tr>
+                    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                    <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
+                    <td>{{ resource.rtype }}</td>
+                    <td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
+                    <td><button onclick="showEditResource( {{resource.id}} )" class="btn btn-xs btn-primary">Edit</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-	<br /><br />
-	<hr>
-	<h3>Standard Resources</h3>
-	<div class="dt_wrapper">
-		<table width="100%" class="table table-striped table-bordered table-hover dataTable" id="resource-table">
-			<thead>
-				<tr>
-					<th>Toggle</th>
-					<th>Visible</th>
-					<th>Resource</th>
-					<th>Resource Type</th>
-					<th>Resource Link</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for resource in resources %}
-					<tr>
-					{% if resource.private == False %}
-					    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
-					    <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
-					{% else %}
-					    <td>Private</td>
-					    <td>No</td>
-					{% endif %}
-					
-					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
-					<td>{{ resource.rtype }}</td>
-					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-	
-	<br /><br />
+    <br /><br />
+    <hr>
+    <h3>Standard Resources</h3>
+    <div class="dt_wrapper">
+        <table width="100%" class="table table-striped table-bordered table-hover dataTable" id="resource-table">
+            <thead>
+                <tr>
+                    <th>Toggle</th>
+                    <th>Visible</th>
+                    <th>Resource</th>
+                    <th>Resource Type</th>
+                    <th>Resource Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in resources %}
+                    <tr>
+                    {% if resource.private == False %}
+                        <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                        <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+                    {% else %}
+                        <td>Private</td>
+                        <td>No</td>
+                    {% endif %}
+                    
+                    <td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
+                    <td>{{ resource.rtype }}</td>
+                    <td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <br /><br />
     <hr>
     <h3>Shared Resources from Other Teachers</h3>
     <div class="dt_wrapper">
-		<table width="100%" class="table table-striped table-bordered table-hover dataTable" id="sresource-table">
-			<thead>
-				<tr>
-					<th>Toggle</th>
-					<th>Visible</th>
-					<th>Resource</th>
-					<th>Resource Type</th>
-					<th>Resource Link</th>
-					<th>Added By</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for resource in sresources %}
-					<tr>
-					<td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
-					<td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
-					<td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
-					<td>{{ resource.rtype }}</td>
-					<td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
-					<td>{{ resource.author_name }}</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+        <table width="100%" class="table table-striped table-bordered table-hover dataTable" id="sresource-table">
+            <thead>
+                <tr>
+                    <th>Toggle</th>
+                    <th>Visible</th>
+                    <th>Resource</th>
+                    <th>Resource Type</th>
+                    <th>Resource Link</th>
+                    <th>Added By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in sresources %}
+                    <tr>
+                    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                    <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
+                    <td>{{ resource.rtype }}</td>
+                    <td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
+                    <td>{{ resource.author_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endif %}
 
 <!-- Add resource modal -->
@@ -302,9 +302,9 @@ $(document).ready(function() {
     $('#resource-table').DataTable({
                 responsive: true,
                 "iDisplayLength": 10,
-            	"language": {
+                "language": {
                 "lengthMenu": 'Display <select class="form-control">'+
-                	'<option value="5">5</option>'+
+                    '<option value="5">5</option>'+
                     '<option value="10">10</option>'+
                     '<option value="15">15</option>'+
                     '<option value="-1">All</option>'+
@@ -324,9 +324,9 @@ $(document).ready(function() {
     $('#cresource-table').DataTable({
                 responsive: true,
                 "iDisplayLength": 10,
-            	"language": {
+                "language": {
                 "lengthMenu": 'Display <select class="form-control">'+
-                	'<option value="5">5</option>'+
+                    '<option value="5">5</option>'+
                     '<option value="10">10</option>'+
                     '<option value="15">15</option>'+
                     '<option value="-1">All</option>'+
@@ -346,9 +346,9 @@ $(document).ready(function() {
      $('#sresource-table').DataTable({
                 responsive: true,
                 "iDisplayLength": 10,
-            	"language": {
+                "language": {
                 "lengthMenu": 'Display <select class="form-control">'+
-                	'<option value="5">5</option>'+
+                    '<option value="5">5</option>'+
                     '<option value="10">10</option>'+
                     '<option value="15">15</option>'+
                     '<option value="-1">All</option>'+
@@ -386,7 +386,7 @@ function toggleChapter(chapter_num) {
      $('#c-vis-cell-' + chapter_num).html(now_visible ? "Yes" : "No");
  });
  request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
+        console.log(errorThrown);
  });
 }
 
@@ -411,7 +411,7 @@ function toggleModule(module_num, chapter_num) {
      $('#m-vis-cell-' + module_num + '-' + chapter_num).html(now_visible ? "Yes" : "No");
  });
  request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
+        console.log(errorThrown);
  });
 }
 
@@ -435,7 +435,7 @@ function toggleResource(resource_id) {
      $('#r-vis-cell-' + resource_id).html(now_visible ? "Yes" : "No");
  });
  request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
+        console.log(errorThrown);
  });
 }
 
@@ -458,8 +458,8 @@ function save() {
         $('#save-response').html('Saved successfully.')
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
-	});
+        console.log(errorThrown);
+    });
 }
 
 function addResource() {
@@ -484,8 +484,8 @@ function addResource() {
         location.reload(true);
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
-	});
+        console.log(errorThrown);
+    });
 }
 
 function showEditResource(id) {
@@ -524,7 +524,7 @@ function showEditResource(id) {
     })
     
      request.fail(function(jqXHR, textStatus, errorThrown) {
-    	console.log(errorThrown);
+        console.log(errorThrown);
     });
 }
 
@@ -549,8 +549,8 @@ function editResource(id) {
         location.reload(true);
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(errorThrown);
-	});
+        console.log(errorThrown);
+    });
 }
 
 function showConfirmation(id) {
@@ -577,7 +577,7 @@ function removeResource(id) {
     });
     
     request.fail(function(jqXHR, textStatus, errorThrown) {
-    	console.log(errorThrown);
+        console.log(errorThrown);
     });
 }
 
