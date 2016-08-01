@@ -12,11 +12,11 @@ This is CS50 AP
 
 {% block fullbody %}
 
-<div class="auth" style="padding:0px;">
+<div class="auth">
     <div class="auth-container-register auth-container">
            {% if error %}
-                <div class="row" style="padding-top:50px;"><div class="col-sm-12">
-                <div class="alert alert-danger" style="background-color:#ff6666 !important;border-width:0px;">
+                <div class="row err-area"><div class="col-sm-12">
+                <div class="alert alert-danger errror-msg">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               <strong>Error: </strong>{{ error }}</a>
             </div>
@@ -49,7 +49,7 @@ This is CS50 AP
                 </form>
             </div>
         </div>
-        <div class="text-xs-center" style="padding-bottom:50px;">
+        <div class="text-xs-center return-home">
             <a href="{% url 'curriculum:index' %}" class="btn btn-secondary rounded btn-sm"> <i class="fa fa-arrow-left"></i> Back to homepage </a>
         </div>
     </div>

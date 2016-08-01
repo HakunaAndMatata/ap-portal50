@@ -9,11 +9,11 @@ This is CS50 AP
 
 <p class="headline">Customize Your CS50 AP Curriculum
     {% if arg == None %}
-    <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a>
+    <a class="btn btn-default btn-swap" href="{% url 'curriculum:teacher_page' user.username %}">View Your Curriculum</a>
     {% elif arg == "chapter" %}
-     <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page_chapter' user.username chapter.view_num %}">View Your Curriculum</a>
+     <a class="btn btn-default btn-swap" href="{% url 'curriculum:teacher_page_chapter' user.username chapter.view_num %}">View Your Curriculum</a>
     {% else %}
-    <a class="btn btn-default" style="float:right;" href="{% url 'curriculum:teacher_page_module' user.username chapter.view_num mod.slug %}">View Your Curriculum</a>
+    <a class="btn btn-default btn-swap" href="{% url 'curriculum:teacher_page_module' user.username chapter.view_num mod.slug %}">View Your Curriculum</a>
     {% endif %}
 </p>
 
@@ -60,14 +60,14 @@ This is CS50 AP
             <tbody>
                 <tr>
                     <td>
-                        <button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
+                        <button data-chapter={{ chapter.num }} class="btn btn-xs btn-primary btn-chapter-toggle" type="submit"><b>Toggle</b></button>
                     </td>
                     <td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
                     <td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
                 </tr>
                 {% for module in modules %}
                 <tr>
-                    <td><button onclick="toggleModule({{ module.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+                    <td><button data-module={{ module.num }} data-chapter={{ chapter.num }} class="btn btn-xs btn-primary btn-module-toggle" type="submit"><b>Toggle</b></button></td>
                     <td id="m-vis-cell-{{ module.num }}-{{ chapter.num }}">{% if module.visible == True %}Yes{% else %}No{% endif %}</td>
                     <td><a href="{% url 'curriculum:module_customize' chapter.view_num module.slug %}">Module {{ module.num }} : {{ module.name }}</a></td>
                 </tr>
@@ -91,13 +91,13 @@ This is CS50 AP
             <tbody>
                 <tr>
                     <td>
-                        <button onclick="toggleChapter({{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button>
+                        <button data-chapter={{ chapter.num }} class="btn btn-xs btn-primary btn-chapter-toggle" type="submit"><b>Toggle</b></button>
                     </td>
                     <td id="c-vis-cell-{{ chapter.num }}">{% if vis == True %}Yes{% else %}No{% endif %}</td>
                     <td><b>Chapter {{ chapter.view_num }} : {{ chapter.name }}</b></td>
                 </tr>
                 <tr>
-                    <td><button onclick="toggleModule({{ mod.num }}, {{ chapter.num }})" class="btn btn-xs btn-primary" type="submit"><b>Toggle</b></button></td>
+                    <td><button data-module={{ mod.num}} data-chapter={{ chapter.num }} class="btn btn-xs btn-primary btn-module-toggle" type="submit"><b>Toggle</b></button></td>
                     <td id="m-vis-cell-{{ mod.num }}-{{ chapter.num }}">{% if mvis == True %}Yes{% else %}No{% endif %}</td>
                     <td><b>Module {{ mod.num }} : {{ mod.name }}</b></td>
                 </tr>
@@ -109,9 +109,9 @@ This is CS50 AP
     <h6>This information will be displayed to your students on your personal module page.</h6>
     <div class="card card-default">
         <div class="card-block">
-            <textarea rows="5" style="width:100%" autofocus id="custom-area">{{ modinfo.contents }}</textarea>
+            <textarea rows="5" class="fullarea" autofocus id="custom-area">{{ modinfo.contents }}</textarea>
         </div>
-        <div class="card-footer"> <button onclick="save()" class="btn btn-primary">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;<span id="save-response"></span> </div>
+        <div class="card-footer"> <button class="btn btn-primary btn-custom-save">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;<span id="save-response"></span> </div>
     </div>
     
     <hr class="section-separator">
@@ -132,12 +132,12 @@ This is CS50 AP
             <tbody>
                 {% for resource in cresources %}
                     <tr>
-                    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                    <td><button data-resource={{ resource.id }} class="btn btn-xs btn-primary btn-resource-toggle" type="submit">Toggle</button></td>
                     <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
                     <td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
                     <td>{{ resource.rtype }}</td>
                     <td><a href="{{ resource.link }}" target="_blank">{{ resource.link }}</a></td>
-                    <td><button onclick="showEditResource( {{resource.id}} )" class="btn btn-xs btn-primary">Edit</button></td>
+                    <td><button data-resource={{ resource.id }} class="btn btn-xs btn-primary show-edit-resource">Edit</button></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -161,7 +161,7 @@ This is CS50 AP
                 {% for resource in resources %}
                     <tr>
                     {% if resource.private == False %}
-                        <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                        <td><button data-resource={{ resource.id }} class="btn btn-xs btn-primary btn-resource-toggle" type="submit">Toggle</button></td>
                         <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
                     {% else %}
                         <td>Private</td>
@@ -194,7 +194,7 @@ This is CS50 AP
             <tbody>
                 {% for resource in sresources %}
                     <tr>
-                    <td><button onclick="toggleResource({{ resource.id }})" class="btn btn-xs btn-primary" type="submit">Toggle</button></td>
+                    <td><button data-resource={{ resource.id }} class="btn btn-xs btn-primary btn-resource-toggle" type="submit">Toggle</button></td>
                     <td id="r-vis-cell-{{ resource.id }}">{% if resource.visible == True %}Yes{% else %}No{% endif %}</td>
                     <td>{{ resource.name }}{% if resource.content != "" %} : {{ resource.content }}{% endif %}</td>
                     <td>{{ resource.rtype }}</td>
@@ -225,7 +225,7 @@ This is CS50 AP
         <br/>
         <input type="text" id="add-resource-name" class="form-control" placeholder="Resource Name">
         <br/>
-        <textarea class="form-control" rows="5" style="width:100%" autofocus id="add-resource-content" placeholder="Resource Contents (optional)"></textarea>
+        <textarea class="form-control fullarea" rows="5" autofocus id="add-resource-content" placeholder="Resource Contents (optional)"></textarea>
         <br/>
         <input type="text" id="add-resource-link" class="form-control" placeholder="Resource Link">
         <br/>
@@ -233,7 +233,7 @@ This is CS50 AP
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button onclick="addResource()" type="button" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-primary btn-add-resource">Add</button>
       </div>
     </div>
   </div>
@@ -256,7 +256,7 @@ This is CS50 AP
         <br/>
         <input type="text" id="edit-resource-name" class="form-control" placeholder="Resource Name">
         <br/>
-        <textarea class="form-control" rows="5" style="width:100%" autofocus id="edit-resource-content" placeholder="Resource Contents (optional)"></textarea>
+        <textarea class="form-control fullarea" rows="5" autofocus id="edit-resource-content" placeholder="Resource Contents (optional)"></textarea>
         <br/>
         <input type="text" id="edit-resource-link" class="form-control" placeholder="Resource Link">
         <br/>

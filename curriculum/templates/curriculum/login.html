@@ -13,11 +13,11 @@ This is CS50 AP
 
 {% block fullbody %}
 
-<div class="auth" style="padding:0px;">
+<div class="auth">
             <div class="auth-container">
                {% if error %}
                 <div class="row"><div class="col-sm-12">
-                <div class="alert alert-danger" style="background-color:#ff6666 !important;border-width:0px;">
+                <div class="alert alert-danger error-msg">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               <strong>Error: </strong>{{ error }}</a>
             </div>

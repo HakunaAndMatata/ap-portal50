@@ -44,3 +44,47 @@
 .section-separator {
     margin-top:28px;
 }
+
+.btn-swap {
+    float:right;
+}
+
+.panel-prelined {
+    white-space:pre-line;
+}
+
+.panel-spaced {
+    margin-top:-1.2em;
+    margin-bottom:-1.2em;
+}
+
+.fullarea {
+    width:100%;
+}
+
+.news-image {
+    width:100%;
+    max-width:420px;
+}
+
+.homepage-vid {
+    width:100% !important;
+    min-height:350px;
+}
+
+.error-msg {
+    background-color:#ff6666 !important;
+    border-width:0px;
+}
+
+.auth {
+    padding:0px;
+}
+
+.err-area {
+    padding-top:50px;
+}
+
+.return-home {
+    padding-bottom:50px;
+}

@@ -65,6 +65,30 @@ $(document).ready(function() {
                 ]
             }
         });
+    
+    $('.btn-chapter-toggle').click(function() {
+        toggleChapter($(this).data('chapter'));
+    });
+    
+    $('.btn-module-toggle').click(function() {
+       toggleModule($(this).data('module'), $(this).data('chapter'));
+    });
+    
+    $('.btn-resource-toggle').click(function() {
+       toggleResource($(this).data('resource'));
+    });
+    
+    $('.btn-custom-save').click(function() {
+        save();
+    });
+    
+    $('.btn-add-resource').click(function() {
+       addResource(); 
+    });
+    
+    $('.show-edit-resource').click(function() {"
+       showEditResource($(this).data('resource'));
+    });
 
 });
     

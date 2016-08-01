@@ -3,7 +3,7 @@
 
 {% block body %}
 <p class="headline">Teacher Profile: {{ target.first_name }} {{ target.last_name }}
-    <a href="{% url 'curriculum:teacher_page' target.username %}" class="btn btn-default" style="float:right;">View Site</a>
+    <a href="{% url 'curriculum:teacher_page' target.username %}" class="btn btn-default btn-swap">View Site</a>
 </p>
 <br/>
 {% if target_profile.location != "" %}
