@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'ap50.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'portal',
-        'USER': 'root',
-        'PASSWORD': 'mysql50dev28',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': '3306',
     }
 # relics from sqlite
