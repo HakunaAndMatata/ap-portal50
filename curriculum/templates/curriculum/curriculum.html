@@ -34,7 +34,7 @@ This is CS50 AP
     {% endif %}
 </p>
 
-<br />
+<br/>
 
 <div class="row">
     <div class="col-md-6">
@@ -66,7 +66,7 @@ This is CS50 AP
 </div>
 
 {% if c_selected and not m_selected and username == None and chapter.description != "" %}
-<br />
+<br/>
  <div class="card card-default">
     <div class="card-header">
         <div class="header-block">
@@ -82,7 +82,7 @@ This is CS50 AP
 
 
 {% if m_selected %}
-    <br />
+    <br/>
     
 {% if username != None and modinfo != None and modinfo.contents != "" %}
 <div class="row">
@@ -121,7 +121,7 @@ This is CS50 AP
             {% if resource.content != "" %}
                 : {{ resource.content }}
             {% endif %}
-            <br /><br />
+            <br/><br/>
         {% endfor %}
     </div>
     </div>
@@ -137,18 +137,11 @@ This is CS50 AP
 
 {% block script %}
 <script>
-$(document).ready(function() {
-    {% if username == None %}
-    $('#navbar-curriculum').addClass("active");
-    {% else %}
-    $('#navbar-personal').addClass("active");
-     $('.content').css('background-color', "#{{ bgcolor }}");
-     $('.header').css('background-color', "#{{ headercolor }}");
-     $('.sidebar').css('background-color', "#{{ sidecolor }}");
-     $('body').css('color', '{{ textcolor }}');
-     $('.name').css('color', '{{ textcolor }}');
-    {% endif %}
-    
-});
+    var user_logged_in = ("{{ username }}" != "None");
+    var bgcolor = "#{{ bgcolor }}";
+    var headercolor = "#{{ headercolor }}";
+    var sidecolor = "#{{ sidecolor }}";
+    var textcolor = "#{{ textcolor }}";
 </script>
+<script type="text/javascript" src="{% static 'curriculum/js/curriculum.js' %}"></script>
 {% endblock %}

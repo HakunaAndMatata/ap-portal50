@@ -40,3 +40,7 @@
 .dataTable {
 /*    table-layout: fixed;*/
 }
+
+.section-separator {
+    margin-top:28px;
+}
