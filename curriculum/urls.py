@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views, ajax
+from . import views, api
 
 app_name = 'curriculum'
 urlpatterns = [
@@ -23,15 +23,15 @@ urlpatterns = [
     
     url(r'^profile/(?P<username>[\w.@+-]+)/$', views.profile, name='profile'),
     
-    url(r'^ajax/modinfochange/$', ajax.update_modinfo, name='update_modinfo'),
-    url(r'^ajax/resource-toggle/$', ajax.resource_toggle, name='resource_toggle'),
-    url(r'^ajax/module-toggle/$', ajax.module_toggle, name='module_toggle'),
-    url(r'^ajax/chapter-toggle/$', ajax.chapter_toggle, name='chapter_toggle'),
-    url(r'^ajax/update-settings/$', ajax.update_settings, name='update_settings'),
-    url(r'^ajax/add-resource/$', ajax.add_resource, name='add_resource'),
-    url(r'^ajax/remove-resource/$', ajax.remove_resource, name='remove_resource'),
-    url(r'^ajax/access-resource/$', ajax.access_resource, name='access_resource'),
-    url(r'^ajax/edit-resource/$', ajax.edit_resource, name='edit_resource'),
+    url(r'^api/modinfochange/$', api.update_modinfo, name='update_modinfo'),
+    url(r'^api/resource-toggle/$', api.resource_toggle, name='resource_toggle'),
+    url(r'^api/module-toggle/$', api.module_toggle, name='module_toggle'),
+    url(r'^api/chapter-toggle/$', api.chapter_toggle, name='chapter_toggle'),
+    url(r'^api/update-settings/$', api.update_settings, name='update_settings'),
+    url(r'^api/add-resource/$', api.add_resource, name='add_resource'),
+    url(r'^api/remove-resource/$', api.remove_resource, name='remove_resource'),
+    url(r'^api/access-resource/$', api.access_resource, name='access_resource'),
+    url(r'^api/edit-resource/$', api.edit_resource, name='edit_resource'),
 
 	# both /brian and /u/brian will go to the user's curriculum page
 	url(r'^(?P<username>[\w.@+-]+)/$', views.teacher_page, name='teacher_page'),
